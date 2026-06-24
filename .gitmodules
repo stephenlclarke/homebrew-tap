@@ -6,3 +6,35 @@
 	path = sources/container-compose
 	url = https://github.com/stephenlclarke/container-compose.git
 	branch = develop
+[submodule "sources/pacman"]
+	path = sources/pacman
+	url = https://github.com/stephenlclarke/pacman.git
+	branch = main
+[submodule "sources/battlezone"]
+	path = sources/battlezone
+	url = https://github.com/stephenlclarke/battlezone.git
+	branch = main
+[submodule "sources/asteroids"]
+	path = sources/asteroids
+	url = https://github.com/stephenlclarke/asteroids.git
+	branch = main
+[submodule "sources/defender"]
+	path = sources/defender
+	url = https://github.com/stephenlclarke/defender.git
+	branch = main
+[submodule "sources/fixdecoder_go"]
+	path = sources/fixdecoder_go
+	url = https://github.com/stephenlclarke/fixdecoder_go.git
+	branch = main
+[submodule "sources/fixdecoder_java"]
+	path = sources/fixdecoder_java
+	url = https://github.com/stephenlclarke/fixdecoder_java.git
+	branch = main
+[submodule "sources/fixdecoder_rs"]
+	path = sources/fixdecoder_rs
+	url = https://github.com/stephenlclarke/fixdecoder_rs.git
+	branch = main
+[submodule "sources/fixdecoder_zig"]
+	path = sources/fixdecoder_zig
+	url = https://github.com/stephenlclarke/fixdecoder_zig.git
+	branch = main
