@@ -1,0 +1,42 @@
+name: Homebrew
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: homebrew-${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  formula:
+    name: Formula Syntax
+    runs-on: macos-26
+    steps:
+      - name: Checkout tap
+        uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - name: Check synchronized formulae
+        run: scripts/sync-formulae.sh --check
+
+      - name: Validate Ruby syntax
+        run: |
+          ruby -c Formula/container.rb
+          ruby -c Formula/container-compose.rb
+
+      - name: Inspect tap formulae
+        run: |
+          brew tap stephenlclarke/tap "${GITHUB_WORKSPACE}"
+          brew info --formula stephenlclarke/tap/container
+          brew info --formula stephenlclarke/tap/container-compose
+          brew untap stephenlclarke/tap

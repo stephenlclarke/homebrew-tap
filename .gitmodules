@@ -1,0 +1,8 @@
+[submodule "sources/container"]
+	path = sources/container
+	url = https://github.com/stephenlclarke/container.git
+	branch = main
+[submodule "sources/container-compose"]
+	path = sources/container-compose
+	url = https://github.com/stephenlclarke/container-compose.git
+	branch = develop
