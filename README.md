@@ -2,32 +2,53 @@
 
 Homebrew tap for `stephenlclarke` tools and games.
 
-This repository is an aggregate tap. The source repositories continue to own their own Homebrew formulae:
-
-- [`stephenlclarke/container`](https://github.com/stephenlclarke/container): `sources/container/Formula/container.rb`
-- [`stephenlclarke/container-compose`](https://github.com/stephenlclarke/container-compose): `sources/container-compose/Formula/container-compose.rb`
-
-Homebrew only discovers formulae from top-level tap paths such as `Formula/*.rb`, so this repository keeps synchronized copies there. The copies are generated from the submodules with:
-
-```sh
-scripts/sync-formulae.sh
-```
-
-To refresh the submodules from their configured branches and then sync the top-level formulae:
-
-```sh
-scripts/sync-formulae.sh --update-submodules
-```
-
-## Install
-
 ```sh
 brew tap stephenlclarke/tap
-brew install --build-from-source --HEAD stephenlclarke/tap/container
-brew install --build-from-source --HEAD stephenlclarke/tap/container-compose
 ```
 
-Other formulae:
+## container
+
+`container` installs Stephen Clarke's fork-backed prebuilt `container` CLI. Detailed install, Apple-package migration, upgrade, and removal instructions live in [`container-compose/INSTALL.md`](https://github.com/stephenlclarke/container-compose/blob/develop/INSTALL.md).
+
+Install the `main` release lane:
+
+```sh
+brew install stephenlclarke/tap/container
+brew services start container
+```
+
+Install the `develop` debug lane:
+
+```sh
+brew install stephenlclarke/tap/container-develop
+brew services start container-develop
+```
+
+## container-compose
+
+`container-compose` installs a Docker Compose style plugin for Apple's `container` CLI. Install it from the same lane as `container`. Detailed install and plugin registration instructions live in [`container-compose/INSTALL.md`](https://github.com/stephenlclarke/container-compose/blob/develop/INSTALL.md).
+
+Install the `main` release lane:
+
+```sh
+brew install stephenlclarke/tap/container-compose
+mkdir -p "$(brew --prefix container)/libexec/container-plugins"
+ln -sfn "$(brew --prefix container-compose)/libexec/container-plugins/compose" "$(brew --prefix container)/libexec/container-plugins/compose"
+brew services restart container
+container compose version
+```
+
+Install the `develop` debug lane:
+
+```sh
+brew install stephenlclarke/tap/container-compose-develop
+mkdir -p "$(brew --prefix container-develop)/libexec/container-plugins"
+ln -sfn "$(brew --prefix container-compose-develop)/libexec/container-plugins/compose" "$(brew --prefix container-develop)/libexec/container-plugins/compose"
+brew services restart container-develop
+container compose version
+```
+
+## Other Formulae
 
 ```sh
 brew install stephenlclarke/tap/pacman
@@ -42,33 +63,16 @@ brew install --HEAD stephenlclarke/tap/fixdecoder-zig
 
 The `fixdecoder-*` formulae install language-suffixed binaries such as `fixdecoder-rs` and `fixdecoder-zig` so the implementations can coexist.
 
-After installing `container-compose`, register the plugin with the Homebrew-installed `container` keg:
+## Maintenance
+
+Top-level `Formula/*.rb` files are synchronized from the source repositories with:
 
 ```sh
-mkdir -p "$(brew --prefix container)/libexec/container-plugins"
-ln -sfn "$(brew --prefix container-compose)/libexec/container-plugins/compose" "$(brew --prefix container)/libexec/container-plugins/compose"
-brew services restart container
+scripts/sync-formulae.sh
 ```
 
-Verify plugin discovery:
+To refresh source submodules and then sync:
 
 ```sh
-container compose version
+scripts/sync-formulae.sh --update-submodules
 ```
-
-## Source Branches
-
-The submodules currently track:
-
-- `sources/container`: `main`
-- `sources/container-compose`: `develop`
-- `sources/pacman`: `main`
-- `sources/battlezone`: `main`
-- `sources/asteroids`: `main`
-- `sources/defender`: `main`
-- `sources/fixdecoder_go`: `main`
-- `sources/fixdecoder_java`: `main`
-- `sources/fixdecoder_rs`: `main`
-- `sources/fixdecoder_zig`: `main`
-
-The `container-compose` formula is mirrored from its `develop` lane because that formula builds from the `develop` branch and pins the matching `stephenlclarke/container` fork resource. No tap files in either source repository are modified by this aggregate tap.

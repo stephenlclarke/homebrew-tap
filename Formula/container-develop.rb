@@ -1,15 +1,15 @@
-class Container < Formula
+class ContainerDevelop < Formula
   desc "Create and run Linux containers using lightweight virtual machines"
   homepage "https://apple.github.io/container/documentation/"
-  url "https://github.com/stephenlclarke/container/releases/download/homebrew-main/container-homebrew-main-release-arm64.tar.gz"
+  url "https://github.com/stephenlclarke/container/releases/download/homebrew-develop/container-homebrew-develop-debug-arm64.tar.gz"
   sha256 :no_check
-  version "main-release"
+  version "develop-debug"
   license "Apache-2.0"
 
   depends_on arch: :arm64
   depends_on macos: :sequoia
 
-  conflicts_with "container-develop", because: "both install the container CLI and service"
+  conflicts_with "container", because: "both install the container CLI and service"
 
   def install
     bin.install "bin/container"
@@ -30,8 +30,8 @@ class Container < Formula
 
   def caveats
     <<~EOS
-      This formula installs the main release prebuilt release asset:
-        container-homebrew-main-release-arm64.tar.gz
+      This formula installs the develop debug prebuilt release asset:
+        container-homebrew-develop-debug-arm64.tar.gz
     EOS
   end
 
