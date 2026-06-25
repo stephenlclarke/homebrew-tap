@@ -5,7 +5,7 @@
 [submodule "sources/container-compose"]
 	path = sources/container-compose
 	url = https://github.com/stephenlclarke/container-compose.git
-	branch = develop
+	branch = main
 [submodule "sources/pacman"]
 	path = sources/pacman
 	url = https://github.com/stephenlclarke/pacman.git
