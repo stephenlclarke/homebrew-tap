@@ -9,8 +9,6 @@ class Container < Formula
   depends_on arch: :arm64
   depends_on macos: :sequoia
 
-  conflicts_with "container-develop", because: "both install the container CLI and service"
-
   def install
     bin.install "bin/container"
     bin.install "bin/container-apiserver"

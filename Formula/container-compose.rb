@@ -10,7 +10,7 @@ class ContainerCompose < Formula
   depends_on arch: :arm64
   depends_on macos: :sequoia
 
-  conflicts_with "container-compose-develop", because: "both install the container-compose command and compose plugin"
+  conflicts_with "container-compose-snapshot", because: "both install the container-compose command and compose plugin"
 
   def install
     plugin = libexec/"container-plugins/compose"

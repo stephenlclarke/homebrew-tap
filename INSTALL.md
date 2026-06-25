@@ -1,13 +1,13 @@
 # Installing From The Tap
 
-This tap provides Homebrew formulae for Stephen Clarke's tools and games. For the `container` and `container-compose` stack, the tap installs prebuilt release assets and supports two lanes:
+This tap provides Homebrew formulae for Stephen Clarke's tools and games. For the `container-compose` stack, install the fork-backed `container` runtime and one frozen plugin lane:
 
-| Lane | Formulae | Build type |
+| Lane | Formula | Build type |
 | --- | --- | --- |
-| `main` | `container`, `container-compose` | release |
-| `develop` | `container-develop`, `container-compose-develop` | debug |
+| Release | `container-compose` | release |
+| Snapshot | `container-compose-snapshot` | debug |
 
-Install `container` and `container-compose` from the same lane. Detailed `container` migration guidance, including what to do when Apple's signed `container` package is already installed, lives in [`container-compose/INSTALL.md`](https://github.com/stephenlclarke/container-compose/blob/develop/INSTALL.md).
+Detailed `container` migration guidance, including what to do when Apple's signed `container` package is already installed, lives in [`container-compose/INSTALL.md`](https://github.com/stephenlclarke/container-compose/blob/main/INSTALL.md).
 
 ## Requirements
 
@@ -23,27 +23,15 @@ brew tap stephenlclarke/tap
 
 ## Install container
 
-Install the `main` release lane:
-
 ```sh
 brew install stephenlclarke/tap/container
 brew services start container
 container --version
 ```
 
-Install the `develop` debug lane:
-
-```sh
-brew install stephenlclarke/tap/container-develop
-brew services start container-develop
-container --version
-```
-
-The two lanes both install the `container` command and service payload, so they conflict with each other. Uninstall one lane before installing the other.
-
 ## Install container-compose
 
-Install the `main` release lane:
+Install the latest frozen release:
 
 ```sh
 brew install stephenlclarke/tap/container-compose
@@ -53,51 +41,52 @@ brew services restart container
 container compose version
 ```
 
-Install the `develop` debug lane:
+Install the latest frozen snapshot:
 
 ```sh
-brew install stephenlclarke/tap/container-compose-develop
-mkdir -p "$(brew --prefix container-develop)/libexec/container-plugins"
-ln -sfn "$(brew --prefix container-compose-develop)/libexec/container-plugins/compose" "$(brew --prefix container-develop)/libexec/container-plugins/compose"
-brew services restart container-develop
+brew install stephenlclarke/tap/container-compose-snapshot
+mkdir -p "$(brew --prefix container)/libexec/container-plugins"
+ln -sfn "$(brew --prefix container-compose-snapshot)/libexec/container-plugins/compose" "$(brew --prefix container)/libexec/container-plugins/compose"
+brew services restart container
 container compose version
 ```
 
-The `container-compose` lane must match the installed `container` lane. Do not install the `develop` plugin against the `main` container formula.
+Do not install `container-compose` and `container-compose-snapshot` at the same time. They both install the `container-compose` command and the `compose` plugin payload.
 
-## Switch Lanes
+## Switch Plugin Lanes
 
-Stop services, uninstall the current lane, then install the other lane:
+Stop the service, uninstall the current plugin lane, then install the other lane:
 
 ```sh
 brew services stop container || true
-brew services stop container-develop || true
-brew uninstall container-compose container-compose-develop container container-develop || true
+brew uninstall container-compose container-compose-snapshot || true
 ```
 
 Then run the install commands for the target lane.
 
 ## Upgrade
 
-Update the tap and reinstall the installed lane:
+Update the tap and reinstall the installed packages:
 
 ```sh
 brew update
-brew reinstall container container-compose
+brew reinstall container
+brew reinstall container-compose
 ```
 
-For the `develop` lane:
+For the snapshot lane:
 
 ```sh
 brew update
-brew reinstall container-develop container-compose-develop
+brew reinstall container
+brew reinstall container-compose-snapshot
 ```
 
-Re-register the plugin symlink after reinstalling `container-compose`.
+Re-register the plugin symlink after reinstalling `container-compose` or `container-compose-snapshot`.
 
 ## Remove container-compose
 
-Remove the `main` plugin:
+Remove the release plugin:
 
 ```sh
 brew services stop container || true
@@ -105,28 +94,19 @@ rm -f "$(brew --prefix container)/libexec/container-plugins/compose"
 brew uninstall container-compose
 ```
 
-Remove the `develop` plugin:
+Remove the snapshot plugin:
 
 ```sh
-brew services stop container-develop || true
-rm -f "$(brew --prefix container-develop)/libexec/container-plugins/compose"
-brew uninstall container-compose-develop
+brew services stop container || true
+rm -f "$(brew --prefix container)/libexec/container-plugins/compose"
+brew uninstall container-compose-snapshot
 ```
 
 ## Remove container
 
-Remove the `main` lane:
-
 ```sh
 brew services stop container || true
 brew uninstall container
-```
-
-Remove the `develop` lane:
-
-```sh
-brew services stop container-develop || true
-brew uninstall container-develop
 ```
 
 If you want to remove the tap after uninstalling the formulae:
