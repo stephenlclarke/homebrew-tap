@@ -1,9 +1,9 @@
 class ContainerComposeSnapshot < Formula
   desc "Docker Compose style plugin for Apple's container CLI"
   homepage "https://github.com/stephenlclarke/container-compose"
-  url "https://github.com/stephenlclarke/container-compose/releases/download/homebrew-develop/container-compose-plugin-develop-debug-arm64.tar.gz"
-  sha256 :no_check
-  version "snapshot-bootstrap"
+  url "https://github.com/stephenlclarke/container-compose/releases/download/homebrew-snapshot-bootstrap/container-compose-plugin-snapshot-bootstrap-debug-arm64.tar.gz"
+  sha256 "c9405b7090fc023306e82b530fa80ce7493a8f24e62c23c3d44f042a2f6eb750"
+  version "snapshot-bootstrap-5c5b2c9a2e4f"
   license "Apache-2.0"
 
   depends_on "container"
@@ -30,8 +30,8 @@ class ContainerComposeSnapshot < Formula
         ln -sfn "#{opt_libexec}/container-plugins/compose" "$(brew --prefix container)/libexec/container-plugins/compose"
         brew services restart container
 
-      This formula installs the snapshot bootstrap debug prebuilt release asset:
-        container-compose-plugin-develop-debug-arm64.tar.gz
+      This formula installs the snapshot/bootstrap debug prebuilt release asset:
+        container-compose-plugin-snapshot-bootstrap-debug-arm64.tar.gz
     EOS
   end
 

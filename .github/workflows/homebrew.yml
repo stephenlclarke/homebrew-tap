@@ -33,6 +33,15 @@ jobs:
             ruby -c "${formula}"
           done
 
+      - name: Reject stale compose install lanes
+        run: |
+          set -euo pipefail
+          if grep -R -n -E 'homebrew-develop|develop-debug|container-compose-plugin-develop|sources/container-compose.*:.*develop' \
+            README.md Formula/container-compose.rb Formula/container-compose-snapshot.rb; then
+            printf 'stale container-compose develop install lane reference found\n' >&2
+            exit 1
+          fi
+
       - name: Inspect tap formulae
         run: |
           brew tap stephenlclarke/tap "${GITHUB_WORKSPACE}"

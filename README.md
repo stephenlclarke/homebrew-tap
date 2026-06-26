@@ -69,4 +69,4 @@ The submodules are maintenance inputs for this aggregate tap, not user-facing in
 - `sources/fixdecoder_rs`: `main`
 - `sources/fixdecoder_zig`: `main`
 
-`container-compose` development now happens on `main`; release and snapshot Homebrew installs are supplied as prebuilt assets from frozen compose branches through `container-compose` and `container-compose-snapshot`. The old `develop` source-build lane is not the normal install path.
+`container-compose` development now happens on `main`; release and snapshot Homebrew installs are supplied as prebuilt assets from frozen compose branches through `container-compose` and `container-compose-snapshot`.
