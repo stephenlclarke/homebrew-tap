@@ -7,8 +7,8 @@ class ContainerCompose < Formula
   license "Apache-2.0"
 
   depends_on arch: :arm64
-  depends_on "stephenlclarke/tap/container"
   depends_on macos: :sequoia
+  depends_on "stephenlclarke/tap/container"
 
   def install
     plugin = libexec/"container-plugins/compose"
