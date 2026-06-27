@@ -2,8 +2,8 @@ class ContainerComposeRelease < Formula
   desc "Docker Compose style plugin for Apple's container CLI"
   homepage "https://github.com/stephenlclarke/container-compose"
   url "https://github.com/stephenlclarke/container-compose/releases/download/homebrew-release/container-compose-plugin-release-release-arm64.tar.gz"
-  version "release-release-ac0fa5b44114"
-  sha256 "fec9b1cb43d27665a01c2032cda6c5207fb482a77d8c1d7320a8657c6cff6e3e"
+  version "release-release-8b07f6082dd4"
+  sha256 "16c7be8527260b5ae47a5759970c52676dcdfdb12e1ad15e796d7874b4356c92"
   license "Apache-2.0"
 
   depends_on arch: :arm64
@@ -29,7 +29,7 @@ class ContainerComposeRelease < Formula
         ln -sfn "#{opt_libexec}/container-plugins/compose" "$(brew --prefix container-release)/libexec/libexec/container-plugins/compose"
         brew services restart container-release
 
-      This formula installs the latest release prebuilt release asset:
+      This formula installs the release release prebuilt release asset:
         container-compose-plugin-release-release-arm64.tar.gz
     EOS
   end
