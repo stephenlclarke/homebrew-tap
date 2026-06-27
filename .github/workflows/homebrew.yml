@@ -45,7 +45,7 @@ jobs:
       - name: Inspect tap formulae
         run: |
           brew tap stephenlclarke/tap "${GITHUB_WORKSPACE}"
-          brew trust stephenlclarke/tap
+          brew trust --tap stephenlclarke/tap
           for formula in Formula/*.rb; do
             name="$(basename "${formula}" .rb)"
             brew info --formula "stephenlclarke/tap/${name}"
