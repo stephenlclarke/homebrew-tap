@@ -1,9 +1,9 @@
-class Container < Formula
+class ContainerRelease < Formula
   desc "Create and run Linux containers using lightweight virtual machines"
   homepage "https://apple.github.io/container/documentation/"
-  url "https://github.com/stephenlclarke/container/releases/download/homebrew-main/container-homebrew-main-release-arm64.tar.gz"
-  sha256 "0a16cdf30046abfced04bb3d98ef8acdc13388e69eed2a77488d2e94bbbc4df5"
-  version "main-release-b7e72161e4ba"
+  url "https://github.com/stephenlclarke/container/releases/download/homebrew-release/container-homebrew-release-release-arm64.tar.gz"
+  sha256 "12913e05d9930a0d971b7e36663b6bb31920ba1ccc1fc4fcc690bdcdd0e93524"
+  version "release-release-b7e72161e4ba"
   license "Apache-2.0"
 
   depends_on arch: :arm64
@@ -28,8 +28,8 @@ class Container < Formula
 
   def caveats
     <<~EOS
-      This formula installs the main release prebuilt release asset:
-        container-homebrew-main-release-arm64.tar.gz
+      This formula installs the latest release prebuilt release asset:
+        container-homebrew-release-release-arm64.tar.gz
     EOS
   end
 

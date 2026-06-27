@@ -15,6 +15,10 @@ brew install stephenlclarke/tap/container
 brew services start container
 ```
 
+The latest stable release lane is available as `container-release`. The
+`homebrew-release` package tag moves to the newest promoted release, like a
+stable `latest` tag.
+
 ## container-compose
 
 `container-compose` installs prebuilt Docker Compose style plugin assets for Apple's `container` CLI. Normal installs do not build Swift or Go source and do not require Go or Xcode. Detailed install and plugin registration instructions live in [`container-compose/INSTALL.md`](https://github.com/stephenlclarke/container-compose/blob/main/INSTALL.md).
@@ -32,6 +36,17 @@ container compose version
 The `release` branch publishes `container-compose-release`. Tagged release
 branch copies publish branch-derived formula names such as
 `container-compose-release-v0-1-0`.
+
+For the latest stable release lane, install the matching release formulae:
+
+```sh
+brew install stephenlclarke/tap/container-release
+brew install stephenlclarke/tap/container-compose-release
+mkdir -p "$(brew --prefix container-release)/libexec/container-plugins"
+ln -sfn "$(brew --prefix container-compose-release)/libexec/container-plugins/compose" "$(brew --prefix container-release)/libexec/container-plugins/compose"
+brew services restart container-release
+container compose version
+```
 
 ## Other Formulae
 
