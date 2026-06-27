@@ -19,7 +19,7 @@ brew services start container
 
 `container-compose` installs prebuilt Docker Compose style plugin assets for Apple's `container` CLI. Normal installs do not build Swift or Go source and do not require Go or Xcode. Detailed install and plugin registration instructions live in [`container-compose/INSTALL.md`](https://github.com/stephenlclarke/container-compose/blob/main/INSTALL.md).
 
-Install the latest frozen release:
+Install the latest `main` prebuilt:
 
 ```sh
 brew install stephenlclarke/tap/container-compose
@@ -29,15 +29,9 @@ brew services restart container
 container compose version
 ```
 
-Install the latest frozen snapshot:
-
-```sh
-brew install stephenlclarke/tap/container-compose-snapshot
-mkdir -p "$(brew --prefix container)/libexec/container-plugins"
-ln -sfn "$(brew --prefix container-compose-snapshot)/libexec/container-plugins/compose" "$(brew --prefix container)/libexec/container-plugins/compose"
-brew services restart container
-container compose version
-```
+The `release` branch publishes `container-compose-release`. Tagged release
+branch copies publish branch-derived formula names such as
+`container-compose-release-v0-1-0`.
 
 ## Other Formulae
 
@@ -69,4 +63,4 @@ The submodules are maintenance inputs for this aggregate tap, not user-facing in
 - `sources/fixdecoder_rs`: `main`
 - `sources/fixdecoder_zig`: `main`
 
-`container-compose` development now happens on `main`; release and snapshot Homebrew installs are supplied as prebuilt assets from frozen compose branches through `container-compose` and `container-compose-snapshot`.
+`container-compose` and `container` development now happen on `main`; release Homebrew installs are supplied as release prebuilt assets from `release` and `release-*` branches. Debug snapshot formulae are no longer part of the tap.

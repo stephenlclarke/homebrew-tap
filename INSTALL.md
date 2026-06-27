@@ -1,11 +1,12 @@
 # Installing From The Tap
 
-This tap provides Homebrew formulae for Stephen Clarke's tools and games. For the `container-compose` stack, install the fork-backed `container` runtime and one frozen plugin lane:
+This tap provides Homebrew formulae for Stephen Clarke's tools and games. For the `container-compose` stack, install the fork-backed `container` runtime and one plugin lane:
 
 | Lane | Formula | Build type |
 | --- | --- | --- |
-| Release | `container-compose` | release |
-| Snapshot | `container-compose-snapshot` | debug |
+| Main | `container-compose` | release |
+| Release | `container-compose-release` | release |
+| Tagged release | `container-compose-release-v0-1-0` style | release |
 
 Detailed `container` migration guidance, including what to do when Apple's signed `container` package is already installed, lives in [`container-compose/INSTALL.md`](https://github.com/stephenlclarke/container-compose/blob/main/INSTALL.md).
 
@@ -31,7 +32,7 @@ container --version
 
 ## Install container-compose
 
-Install the latest frozen release:
+Install the latest `main` prebuilt:
 
 ```sh
 brew install stephenlclarke/tap/container-compose
@@ -41,25 +42,17 @@ brew services restart container
 container compose version
 ```
 
-Install the latest frozen snapshot:
-
-```sh
-brew install stephenlclarke/tap/container-compose-snapshot
-mkdir -p "$(brew --prefix container)/libexec/container-plugins"
-ln -sfn "$(brew --prefix container-compose-snapshot)/libexec/container-plugins/compose" "$(brew --prefix container)/libexec/container-plugins/compose"
-brew services restart container
-container compose version
-```
-
-Do not install `container-compose` and `container-compose-snapshot` at the same time. They both install the `container-compose` command and the `compose` plugin payload.
+The `release` branch publishes `container-compose-release`. Tagged release
+branch copies publish branch-derived formula names such as
+`container-compose-release-v0-1-0`.
 
 ## Switch Plugin Lanes
 
-Stop the service, uninstall the current plugin lane, then install the other lane:
+Stop the service, uninstall the current plugin lane, then install the target lane:
 
 ```sh
 brew services stop container || true
-brew uninstall container-compose container-compose-snapshot || true
+brew uninstall container-compose container-compose-release || true
 ```
 
 Then run the install commands for the target lane.
@@ -74,15 +67,7 @@ brew reinstall container
 brew reinstall container-compose
 ```
 
-For the snapshot lane:
-
-```sh
-brew update
-brew reinstall container
-brew reinstall container-compose-snapshot
-```
-
-Re-register the plugin symlink after reinstalling `container-compose` or `container-compose-snapshot`.
+Re-register the plugin symlink after reinstalling `container-compose` or a release-branch formula.
 
 ## Remove container-compose
 
@@ -92,14 +77,6 @@ Remove the release plugin:
 brew services stop container || true
 rm -f "$(brew --prefix container)/libexec/container-plugins/compose"
 brew uninstall container-compose
-```
-
-Remove the snapshot plugin:
-
-```sh
-brew services stop container || true
-rm -f "$(brew --prefix container)/libexec/container-plugins/compose"
-brew uninstall container-compose-snapshot
 ```
 
 ## Remove container

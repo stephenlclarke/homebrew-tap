@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
 # USAGE:
-#   scripts/sync-formulae.sh [--check] [--update-submodules]
+#   scripts/sync-formulae.sh [--check]
 #
 # Synchronizes top-level Homebrew formulae that are still mirrored from source
-# repository submodules. The container-compose release and snapshot formulae are
-# updated by the container-compose frozen branch release workflow instead.
+# repository submodules. Container and container-compose prebuilt formulae are
+# updated directly by their branch package workflows instead.
 #
 # Options:
 #   --check              verify synchronized formulae without writing files
-#   --update-submodules  update submodules from their configured branches first
 #   -h, --help           show this help
 
 set -euo pipefail
@@ -18,7 +17,6 @@ SCRIPT_NAME="$(basename "$SELF_PATH")"
 readonly SCRIPT_NAME
 
 check=0
-update_submodules=0
 
 usage() {
     sed -n '2,13p' "$SELF_PATH" | sed 's/^# \{0,1\}//'
@@ -34,9 +32,6 @@ while [[ $# -gt 0 ]]; do
         --check)
             check=1
             ;;
-        --update-submodules)
-            update_submodules=1
-            ;;
         -h|--help)
             usage
             exit 0
@@ -51,12 +46,6 @@ done
 
 repo_root="$(git rev-parse --show-toplevel)"
 cd "$repo_root"
-
-git submodule update --init sources/container
-
-if [[ "$update_submodules" -eq 1 ]]; then
-    git -C sources/container fetch --quiet origin main
-fi
 
 render_formula() {
     local repo_path="$1"
@@ -85,6 +74,5 @@ render_formula() {
 }
 
 status=0
-render_formula sources/container main Formula/container.rb Formula/container.rb || status=1
 
 exit "$status"
