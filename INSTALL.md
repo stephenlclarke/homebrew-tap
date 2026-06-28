@@ -12,7 +12,7 @@ The latest stable release lane uses the moving `homebrew-release` package tag,
 similar to a Docker `latest` tag. Tagged release formulae are for immutable
 release branch copies.
 
-The runtime and plugin are the only Homebrew-installed pieces of the container stack. `containerization` is a Swift package dependency compiled into those packages, and `container-builder-shim` is consumed as a Linux/arm64 builder image pinned by `container` rather than as a macOS Homebrew formula. The tap tracks both source repositories on `main` for maintenance visibility.
+The runtime and plugin are the only Homebrew-installed pieces of the container stack. `containerization` is a Swift package dependency compiled into those packages, and `container-builder-shim` is consumed as a Linux/arm64 builder image pinned by `container` rather than as a macOS Homebrew formula. The tap tracks all four source repositories on `main` for maintenance visibility.
 
 Detailed `container` migration guidance, including what to do when Apple's signed `container` package is already installed, lives in [`container-compose/INSTALL.md`](https://github.com/stephenlclarke/container-compose/blob/main/INSTALL.md).
 

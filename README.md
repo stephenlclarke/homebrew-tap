@@ -13,9 +13,18 @@ The `container` / `container-compose` formulae are built from a four-repository 
 - [`container`](https://github.com/stephenlclarke/container): fork-backed runtime and CLI. The `container` formula follows `main`; `container-release` follows the moving `release` branch package.
 - [`container-compose`](https://github.com/stephenlclarke/container-compose): Compose plugin. The `container-compose` formula follows `main`; `container-compose-release` follows the matching moving `release` branch package.
 - [`containerization`](https://github.com/stephenlclarke/containerization): Swift runtime library consumed by both packages. Main packages use `main`; release packages use `release`.
-- [`container-builder-shim`](https://github.com/stephenlclarke/container-builder-shim): Go BuildKit bridge source. It is tracked here as a maintenance submodule, while `container` consumes an immutable builder image tag, currently `0.13.3`.
+- [`container-builder-shim`](https://github.com/stephenlclarke/container-builder-shim): Go BuildKit bridge source. It is tracked here as a maintenance submodule, while `container` consumes an immutable builder image tag, currently `0.13.4`.
 
 The tap source submodules track those repositories on `main` so formula maintenance can see the current source state. User installs do not build from those submodules; they consume prebuilt release-quality package assets. Go outputs in the stack are release artifacts, not debug builds.
+
+Homebrew metrics were refreshed on 2026-06-28 from the public [`install`](https://formulae.brew.sh/api/analytics/install/365d.json) and [`install-on-request`](https://formulae.brew.sh/api/analytics/install-on-request/365d.json) analytics endpoints. Counts are shown as `30d / 90d / 365d`; formulae omitted by Homebrew's analytics payload are shown as `0 / 0 / 0`.
+
+| Formula | Lane | Install command | Total installs | Requested installs |
+| --- | --- | --- | --- | --- |
+| `container` | `main` runtime | `brew install stephenlclarke/tap/container` | `3 / 3 / 3` | `3 / 3 / 3` |
+| `container-release` | moving `release` runtime | `brew install stephenlclarke/tap/container-release` | `5 / 5 / 5` | `5 / 5 / 5` |
+| `container-compose` | `main` Compose plugin | `brew install stephenlclarke/tap/container-compose` | `3 / 3 / 3` | `3 / 3 / 3` |
+| `container-compose-release` | moving `release` Compose plugin | `brew install stephenlclarke/tap/container-compose-release` | `14 / 14 / 14` | `14 / 14 / 14` |
 
 ## container
 
@@ -59,20 +68,25 @@ brew services restart container-release
 container compose version
 ```
 
-## Other Formulae
+## Games
 
-```sh
-brew install stephenlclarke/tap/pacman
-brew install stephenlclarke/tap/battlezone
-brew install --HEAD stephenlclarke/tap/asteroids
-brew install --HEAD stephenlclarke/tap/defender
-brew install stephenlclarke/tap/fixdecoder-go
-brew install --HEAD stephenlclarke/tap/fixdecoder-java
-brew install stephenlclarke/tap/fixdecoder-rs
-brew install --HEAD stephenlclarke/tap/fixdecoder-zig
-```
+| Formula | App | Install command | Total installs | Requested installs |
+| --- | --- | --- | --- | --- |
+| `pacman` | Pac-Man | `brew install stephenlclarke/tap/pacman` | `0 / 0 / 0` | `0 / 0 / 0` |
+| `battlezone` | Battlezone | `brew install stephenlclarke/tap/battlezone` | `0 / 0 / 0` | `0 / 0 / 0` |
+| `asteroids` | Asteroids | `brew install --HEAD stephenlclarke/tap/asteroids` | `0 / 0 / 0` | `0 / 0 / 0` |
+| `defender` | Defender | `brew install --HEAD stephenlclarke/tap/defender` | `0 / 0 / 0` | `0 / 0 / 0` |
+
+## FIX Decoders
 
 The `fixdecoder-*` formulae install language-suffixed binaries such as `fixdecoder-rs` and `fixdecoder-zig` so the implementations can coexist.
+
+| Formula | Implementation | Install command | Total installs | Requested installs |
+| --- | --- | --- | --- | --- |
+| `fixdecoder-go` | Go | `brew install stephenlclarke/tap/fixdecoder-go` | `0 / 0 / 0` | `0 / 0 / 0` |
+| `fixdecoder-java` | Java | `brew install --HEAD stephenlclarke/tap/fixdecoder-java` | `0 / 0 / 0` | `0 / 0 / 0` |
+| `fixdecoder-rs` | Rust | `brew install stephenlclarke/tap/fixdecoder-rs` | `0 / 0 / 0` | `0 / 0 / 0` |
+| `fixdecoder-zig` | Zig | `brew install --HEAD stephenlclarke/tap/fixdecoder-zig` | `0 / 0 / 0` | `0 / 0 / 0` |
 
 ## Source Branches
 
