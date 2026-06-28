@@ -6,6 +6,17 @@ Homebrew tap for `stephenlclarke` tools and games.
 brew tap stephenlclarke/tap
 ```
 
+## Container Project Repositories
+
+The `container` / `container-compose` formulae are built from a four-repository preview stack:
+
+- [`container`](https://github.com/stephenlclarke/container): fork-backed runtime and CLI. The `container` formula follows `main`; `container-release` follows the moving `release` branch package.
+- [`container-compose`](https://github.com/stephenlclarke/container-compose): Compose plugin. The `container-compose` formula follows `main`; `container-compose-release` follows the matching moving `release` branch package.
+- [`containerization`](https://github.com/stephenlclarke/containerization): Swift runtime library consumed by both packages. Main packages use `main`; release packages use `release`.
+- [`container-builder-shim`](https://github.com/stephenlclarke/container-builder-shim): Go BuildKit bridge source. It is tracked here as a maintenance submodule, while `container` consumes an immutable builder image tag, currently `0.13.3`.
+
+The tap source submodules track those repositories on `main` so formula maintenance can see the current source state. User installs do not build from those submodules; they consume prebuilt release-quality package assets. Go outputs in the stack are release artifacts, not debug builds.
+
 ## container
 
 `container` installs Stephen Clarke's fork-backed prebuilt `container` CLI. Detailed install, Apple-package migration, upgrade, and removal instructions live in [`container-compose/INSTALL.md`](https://github.com/stephenlclarke/container-compose/blob/main/INSTALL.md).
@@ -69,6 +80,8 @@ The submodules are maintenance inputs for this aggregate tap, not user-facing in
 
 - `sources/container`: `main`
 - `sources/container-compose`: `main`
+- `sources/containerization`: `main`
+- `sources/container-builder-shim`: `main`
 - `sources/pacman`: `main`
 - `sources/battlezone`: `main`
 - `sources/asteroids`: `main`
@@ -78,4 +91,4 @@ The submodules are maintenance inputs for this aggregate tap, not user-facing in
 - `sources/fixdecoder_rs`: `main`
 - `sources/fixdecoder_zig`: `main`
 
-`container-compose` and `container` development now happen on `main`; release Homebrew installs are supplied as release prebuilt assets from `release` and `release-*` branches. Debug snapshot formulae are no longer part of the tap.
+`container-compose`, `container`, `containerization`, and `container-builder-shim` development now happen on `main`; release Homebrew installs are supplied as release prebuilt assets from `release` and `release-*` branches where those lanes exist. Debug snapshot formulae are no longer part of the tap.

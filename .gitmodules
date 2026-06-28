@@ -38,3 +38,11 @@
 	path = sources/fixdecoder_zig
 	url = https://github.com/stephenlclarke/fixdecoder_zig.git
 	branch = main
+[submodule "sources/containerization"]
+	path = sources/containerization
+	url = https://github.com/stephenlclarke/containerization.git
+	branch = main
+[submodule "sources/container-builder-shim"]
+	path = sources/container-builder-shim
+	url = https://github.com/stephenlclarke/container-builder-shim.git
+	branch = main
