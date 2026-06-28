@@ -25,8 +25,8 @@ class ContainerCompose < Formula
 
       To make the Homebrew-installed container CLI discover it, link it into
       container's user plugin directory and restart the container service:
-        mkdir -p "$(brew --prefix container)/libexec/libexec/container-plugins"
-        ln -sfn "#{opt_libexec}/container-plugins/compose" "$(brew --prefix container)/libexec/libexec/container-plugins/compose"
+        mkdir -p "$(brew --prefix container)/libexec/container-plugins"
+        ln -sfn "#{opt_libexec}/container-plugins/compose" "$(brew --prefix container)/libexec/container-plugins/compose"
         brew services restart container
 
       This formula installs the main release prebuilt release asset:
