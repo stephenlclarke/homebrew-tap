@@ -13,7 +13,7 @@ The `container` / `container-compose` formulae are built from a four-repository 
 - [`container`](https://github.com/stephenlclarke/container): fork-backed runtime and CLI. The `container` formula follows `main`; `container-release` follows the moving `release` branch package.
 - [`container-compose`](https://github.com/stephenlclarke/container-compose): Compose plugin. The `container-compose` formula follows `main`; `container-compose-release` follows the matching moving `release` branch package.
 - [`containerization`](https://github.com/stephenlclarke/containerization): Swift runtime library consumed by both packages. Main packages use `main`; release packages use `release`.
-- [`container-builder-shim`](https://github.com/stephenlclarke/container-builder-shim): Go BuildKit bridge source. It is tracked here as a maintenance submodule, while `container` consumes an immutable builder image tag, currently `0.13.4`.
+- [`container-builder-shim`](https://github.com/stephenlclarke/container-builder-shim): Go BuildKit bridge source. It is tracked here as a maintenance submodule, while `container` consumes an immutable builder image tag, currently `0.13.6`.
 
 The tap source submodules track those repositories on `main` so formula maintenance can see the current source state. User installs do not build from those submodules; they consume prebuilt release-quality package assets. Go outputs in the stack are release artifacts, not debug builds.
 
