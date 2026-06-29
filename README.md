@@ -41,13 +41,14 @@ stable `latest` tag.
 
 ## container-compose
 
-`container-compose` installs prebuilt Docker Compose style plugin assets for Apple's `container` CLI. Normal installs do not build Swift or Go source and do not require Go or Xcode. The formula links the plugin into the matching Homebrew `container` install root during `post_install`. Detailed install instructions live in [`container-compose/INSTALL.md`](https://github.com/stephenlclarke/container-compose/blob/main/INSTALL.md).
+`container-compose` installs prebuilt Docker Compose style plugin assets for Apple's `container` CLI. Normal installs do not build Swift or Go source and do not require Go or Xcode. The `container` formula owns the plugin registration link inside its own Homebrew install root. Detailed install instructions live in [`container-compose/INSTALL.md`](https://github.com/stephenlclarke/container-compose/blob/main/INSTALL.md).
 
 Install the latest `main` prebuilt:
 
 ```sh
 brew install stephenlclarke/tap/container-compose
-brew services restart container
+brew postinstall stephenlclarke/tap/container
+brew services restart stephenlclarke/tap/container
 container compose version
 ```
 
@@ -60,7 +61,8 @@ For the latest stable release lane, install the matching release formulae:
 ```sh
 brew install stephenlclarke/tap/container-release
 brew install stephenlclarke/tap/container-compose-release
-brew services restart container-release
+brew postinstall stephenlclarke/tap/container-release
+brew services restart stephenlclarke/tap/container-release
 container compose version
 ```
 

@@ -18,25 +18,14 @@ class ContainerComposeRelease < Formula
     bin.install_symlink plugin/"bin/compose" => "container-compose"
   end
 
-  def post_install
-    container_opt = HOMEBREW_PREFIX/"opt/container-release"
-    return unless container_opt.exist?
-
-    plugin_dir = container_opt/"libexec/container-plugins"
-    plugin_dir.mkpath
-    FileUtils.rm_rf plugin_dir/"compose"
-    FileUtils.ln_s opt_libexec/"container-plugins/compose", plugin_dir/"compose"
-  end
-
   def caveats
     <<~EOS
       The plugin is installed under:
         #{opt_libexec}/container-plugins/compose
 
-      The formula links the plugin into the Homebrew container-release install root:
-        $(brew --prefix stephenlclarke/tap/container-release)/libexec/container-plugins/compose
-
-      Restart stephenlclarke/tap/container-release after installing or upgrading this plugin:
+      The container-release formula owns the plugin registration link. Refresh it and
+      restart stephenlclarke/tap/container-release after installing or upgrading this plugin:
+        brew postinstall stephenlclarke/tap/container-release
         brew services restart stephenlclarke/tap/container-release
 
       This formula installs the release lane prebuilt package asset:

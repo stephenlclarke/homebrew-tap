@@ -47,12 +47,14 @@ Install the latest `main` prebuilt:
 
 ```sh
 brew install stephenlclarke/tap/container-compose
-brew services restart container
+brew postinstall stephenlclarke/tap/container
+brew services restart stephenlclarke/tap/container
 container compose version
 ```
 
-The `container-compose` formula links the plugin into the matching Homebrew
-`container` install root during `post_install`.
+The `container` formula owns the plugin registration link inside its own
+Homebrew install root. Run the matching `container` formula's `post_install`
+hook after installing or upgrading `container-compose`.
 
 The `release` branch publishes `container-compose-release`. Tagged release
 branch copies publish branch-derived formula names such as
@@ -63,7 +65,8 @@ For the latest stable release lane:
 ```sh
 brew install stephenlclarke/tap/container-release
 brew install stephenlclarke/tap/container-compose-release
-brew services restart container-release
+brew postinstall stephenlclarke/tap/container-release
+brew services restart stephenlclarke/tap/container-release
 container compose version
 ```
 
@@ -89,8 +92,9 @@ brew reinstall container
 brew reinstall container-compose
 ```
 
-The formulae refresh the plugin symlink during reinstall. If an older install
-still cannot find the plugin, run `brew postinstall container-compose`.
+The `container` formula refreshes the plugin symlink during reinstall. If an
+older install still cannot find the plugin, run
+`brew postinstall stephenlclarke/tap/container`.
 
 ## Remove container-compose
 
