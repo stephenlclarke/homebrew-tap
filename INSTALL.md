@@ -47,11 +47,12 @@ Install the latest `main` prebuilt:
 
 ```sh
 brew install stephenlclarke/tap/container-compose
-mkdir -p "$(brew --prefix container)/libexec/container-plugins"
-ln -sfn "$(brew --prefix container-compose)/libexec/container-plugins/compose" "$(brew --prefix container)/libexec/container-plugins/compose"
 brew services restart container
 container compose version
 ```
+
+The `container-compose` formula links the plugin into the matching Homebrew
+`container` install root during `post_install`.
 
 The `release` branch publishes `container-compose-release`. Tagged release
 branch copies publish branch-derived formula names such as
@@ -62,8 +63,6 @@ For the latest stable release lane:
 ```sh
 brew install stephenlclarke/tap/container-release
 brew install stephenlclarke/tap/container-compose-release
-mkdir -p "$(brew --prefix container-release)/libexec/container-plugins"
-ln -sfn "$(brew --prefix container-compose-release)/libexec/container-plugins/compose" "$(brew --prefix container-release)/libexec/container-plugins/compose"
 brew services restart container-release
 container compose version
 ```
@@ -90,7 +89,8 @@ brew reinstall container
 brew reinstall container-compose
 ```
 
-Re-register the plugin symlink after reinstalling `container-compose` or a release-branch formula.
+The formulae refresh the plugin symlink during reinstall. If an older install
+still cannot find the plugin, run `brew postinstall container-compose`.
 
 ## Remove container-compose
 
