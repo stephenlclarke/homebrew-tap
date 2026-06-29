@@ -2,8 +2,8 @@ class ContainerCompose < Formula
   desc "Docker Compose style plugin for Apple's container CLI"
   homepage "https://github.com/stephenlclarke/container-compose"
   url "https://github.com/stephenlclarke/container-compose/releases/download/homebrew-main/container-compose-plugin-main-release-arm64.tar.gz"
-  version "main-release-7bdc5f27b899"
-  sha256 "67988b7761df9cfec5f3a8ababe591a7b5757c11bad1bbf43a7f516608853536"
+  version "main-release-2c94ab8c58cb"
+  sha256 "6a981fe3f6ee54e548ebe3010219d6634f5d39638bb6c9bfd505783f9605c0f4"
   license "Apache-2.0"
 
   depends_on arch: :arm64
