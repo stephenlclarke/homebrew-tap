@@ -134,7 +134,7 @@ jobs:
             [[ -n "$formula" ]] || continue
             name="$(basename "${formula}" .rb)"
             brew install --formula "stephenlclarke/tap/${name}"
-            brew test --formula "stephenlclarke/tap/${name}"
+            brew test "stephenlclarke/tap/${name}"
           done <<< "$FORMULA_PATHS"
 
       - name: Inspect selected formulae
