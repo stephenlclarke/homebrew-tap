@@ -1,17 +1,15 @@
 class Sqlterm < Formula
-  desc "Terminal helper for launching MySQL connections from local config"
+  desc "Interactive SQL terminal using local ODBC connection profiles"
   homepage "https://github.com/stephenlclarke/sqlterm"
   head "https://github.com/stephenlclarke/sqlterm.git", branch: "main"
 
   depends_on "go" => :build
-  depends_on "mysql-client"
+  depends_on "unixodbc"
 
   def install
-    system "go", "build", "-trimpath", "-o", "sqlterm", "./cmd"
-    libexec.install "sqlterm"
-
-    (bin/"sqlterm").write_env_script libexec/"sqlterm",
-      PATH: "#{formula_opt_bin("mysql-client")}:$PATH"
+    ENV.append "CGO_CFLAGS", "-I#{formula_opt_include("unixodbc")}"
+    ENV.append "CGO_LDFLAGS", "-L#{formula_opt_lib("unixodbc")}"
+    system "go", "build", "-trimpath", "-o", bin/"sqlterm", "./cmd"
   end
 
   def caveats
@@ -19,8 +17,8 @@ class Sqlterm < Formula
       SQLTerm reads database credentials from:
         ~/.config/sqlterm/databases.json
 
-      This formula wraps sqlterm so Homebrew's mysql-client is available
-      on PATH when sqlterm launches the mysql client.
+      Configure ODBC DSNs with unixODBC, or provide a connection_string,
+      driver plus hostname, or dsn entry in that file.
     EOS
   end
 
