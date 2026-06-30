@@ -1,3 +1,6 @@
+---
+# yamllint disable rule:truthy rule:line-length
+
 name: Homebrew
 
 on:
@@ -9,6 +12,8 @@ on:
       - "INSTALL.md"
       - "README.md"
       - "scripts/sync-formulae.sh"
+      - ".gitmodules"
+      - "sources/**"
       - ".github/workflows/homebrew.yml"
   pull_request:
     branches:
@@ -18,6 +23,8 @@ on:
       - "INSTALL.md"
       - "README.md"
       - "scripts/sync-formulae.sh"
+      - ".gitmodules"
+      - "sources/**"
       - ".github/workflows/homebrew.yml"
   workflow_dispatch:
 
@@ -119,10 +126,20 @@ jobs:
           FORMULA_PATHS: ${{ steps.formulae.outputs.paths }}
         run: |
           set -euo pipefail
+
+          is_head_only() {
+            brew info --json=v2 --formula "$1" | python3 -c \
+              'import json, sys; sys.exit(0 if json.load(sys.stdin)["formulae"][0]["versions"]["stable"] is None else 1)'
+          }
+
           while IFS= read -r formula; do
             [[ -n "$formula" ]] || continue
             name="$(basename "${formula}" .rb)"
-            brew fetch --formula --force "stephenlclarke/tap/${name}"
+            fetch_args=()
+            if is_head_only "stephenlclarke/tap/${name}"; then
+              fetch_args+=(--HEAD)
+            fi
+            brew fetch --formula --force "${fetch_args[@]}" "stephenlclarke/tap/${name}"
           done <<< "$FORMULA_PATHS"
 
       - name: Install and test selected formulae
@@ -130,10 +147,20 @@ jobs:
           FORMULA_PATHS: ${{ steps.formulae.outputs.paths }}
         run: |
           set -euo pipefail
+
+          is_head_only() {
+            brew info --json=v2 --formula "$1" | python3 -c \
+              'import json, sys; sys.exit(0 if json.load(sys.stdin)["formulae"][0]["versions"]["stable"] is None else 1)'
+          }
+
           while IFS= read -r formula; do
             [[ -n "$formula" ]] || continue
             name="$(basename "${formula}" .rb)"
-            brew install --formula "stephenlclarke/tap/${name}"
+            install_args=()
+            if is_head_only "stephenlclarke/tap/${name}"; then
+              install_args+=(--HEAD)
+            fi
+            brew install --formula "${install_args[@]}" "stephenlclarke/tap/${name}"
             brew test "stephenlclarke/tap/${name}"
           done <<< "$FORMULA_PATHS"
 

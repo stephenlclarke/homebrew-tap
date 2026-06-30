@@ -121,7 +121,7 @@ brew untap stephenlclarke/tap
 
 ## Other Formulae
 
-Install the games and decoder tools directly:
+Install the games, decoder tools, and utilities directly:
 
 ```sh
 brew install stephenlclarke/tap/pacman
@@ -132,6 +132,7 @@ brew install stephenlclarke/tap/fixdecoder-go
 brew install --HEAD stephenlclarke/tap/fixdecoder-java
 brew install stephenlclarke/tap/fixdecoder-rs
 brew install --HEAD stephenlclarke/tap/fixdecoder-zig
+brew install --HEAD stephenlclarke/tap/sqlterm
 ```
 
 Remove any of them with `brew uninstall <formula>`.

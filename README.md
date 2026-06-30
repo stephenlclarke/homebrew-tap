@@ -86,6 +86,12 @@ The `fixdecoder-*` formulae install language-suffixed binaries such as `fixdecod
 | `fixdecoder-rs` | Rust | `brew install stephenlclarke/tap/fixdecoder-rs` | `0 / 0 / 0` | `0 / 0 / 0` |
 | `fixdecoder-zig` | Zig | `brew install --HEAD stephenlclarke/tap/fixdecoder-zig` | `0 / 0 / 0` | `0 / 0 / 0` |
 
+## Utilities
+
+| Formula | App | Install command | Total installs | Requested installs |
+| --- | --- | --- | --- | --- |
+| `sqlterm` | SQLTerm | `brew install --HEAD stephenlclarke/tap/sqlterm` | `0 / 0 / 0` | `0 / 0 / 0` |
+
 ## Source Branches
 
 The submodules are maintenance inputs for this aggregate tap, not user-facing install lanes. Homebrew users should install the top-level prebuilt formulae above.
@@ -102,5 +108,6 @@ The submodules are maintenance inputs for this aggregate tap, not user-facing in
 - `sources/fixdecoder_java`: `main`
 - `sources/fixdecoder_rs`: `main`
 - `sources/fixdecoder_zig`: `main`
+- `sources/sqlterm`: `main`
 
 `container-compose`, `container`, `containerization`, and `container-builder-shim` development now happen on `main`; release Homebrew installs are supplied as release prebuilt assets from `release` and `release-*` branches where those lanes exist. Debug snapshot formulae are no longer part of the tap.

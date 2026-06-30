@@ -46,3 +46,7 @@
 	path = sources/container-builder-shim
 	url = https://github.com/stephenlclarke/container-builder-shim.git
 	branch = main
+[submodule "sources/sqlterm"]
+	path = sources/sqlterm
+	url = https://github.com/stephenlclarke/sqlterm.git
+	branch = main
