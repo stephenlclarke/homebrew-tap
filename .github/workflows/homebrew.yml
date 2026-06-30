@@ -139,7 +139,11 @@ jobs:
             if is_head_only "stephenlclarke/tap/${name}"; then
               fetch_args+=(--HEAD)
             fi
-            brew fetch --formula --force "${fetch_args[@]}" "stephenlclarke/tap/${name}"
+            if ((${#fetch_args[@]})); then
+              brew fetch --formula --force "${fetch_args[@]}" "stephenlclarke/tap/${name}"
+            else
+              brew fetch --formula --force "stephenlclarke/tap/${name}"
+            fi
           done <<< "$FORMULA_PATHS"
 
       - name: Install and test selected formulae
@@ -160,7 +164,11 @@ jobs:
             if is_head_only "stephenlclarke/tap/${name}"; then
               install_args+=(--HEAD)
             fi
-            brew install --formula "${install_args[@]}" "stephenlclarke/tap/${name}"
+            if ((${#install_args[@]})); then
+              brew install --formula "${install_args[@]}" "stephenlclarke/tap/${name}"
+            else
+              brew install --formula "stephenlclarke/tap/${name}"
+            fi
             brew test "stephenlclarke/tap/${name}"
           done <<< "$FORMULA_PATHS"
 
