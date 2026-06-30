@@ -11,7 +11,7 @@ brew tap stephenlclarke/tap
 The `container` / `container-compose` formulae are built from a four-repository preview stack:
 
 - [`container`](https://github.com/stephenlclarke/container): fork-backed runtime and CLI. The `container` formula follows `main`; `container-release` follows the moving `release` branch package.
-- [`container-compose`](https://github.com/stephenlclarke/container-compose): Compose plugin. The `container-compose` formula follows `main`; `container-compose-release` follows the matching moving `release` branch package.
+- [`container-compose`](https://github.com/stephenlclarke/container-compose): Compose plugin. The `container-compose` formula follows `main`; `container-compose-release` follows the matching moving `release` branch package; versioned release branch packages use names such as `container-compose-release-v0-2-0`.
 - [`containerization`](https://github.com/stephenlclarke/containerization): Swift runtime library consumed by both packages. Main packages use `main`; release packages use `release`.
 - [`container-builder-shim`](https://github.com/stephenlclarke/container-builder-shim): Go BuildKit bridge source. It is tracked here as a maintenance submodule, while `container` consumes an immutable builder image tag, currently `0.13.6`.
 
@@ -25,6 +25,7 @@ Homebrew metrics were refreshed on 2026-06-28 from the public [`install`](https:
 | `container-release` | moving `release` runtime | `brew install stephenlclarke/tap/container-release` | `5 / 5 / 5` | `5 / 5 / 5` |
 | `container-compose` | `main` Compose plugin | `brew install stephenlclarke/tap/container-compose` | `3 / 3 / 3` | `3 / 3 / 3` |
 | `container-compose-release` | moving `release` Compose plugin | `brew install stephenlclarke/tap/container-compose-release` | `14 / 14 / 14` | `14 / 14 / 14` |
+| `container-compose-release-v0-2-0` | tagged `release-v0.2.0` Compose plugin | `brew install stephenlclarke/tap/container-compose-release-v0-2-0` | `0 / 0 / 0` | `0 / 0 / 0` |
 
 ## container
 
@@ -41,7 +42,7 @@ stable `latest` tag.
 
 ## container-compose
 
-`container-compose` installs prebuilt Docker Compose style plugin assets for Apple's `container` CLI. Normal installs do not build Swift or Go source and do not require Go or Xcode. The `container` formula owns the plugin registration link inside its own Homebrew install root. Detailed install instructions live in [`container-compose/INSTALL.md`](https://github.com/stephenlclarke/container-compose/blob/main/INSTALL.md).
+`container-compose` installs prebuilt Docker Compose style plugin assets for Apple's `container` CLI. Normal installs do not build Swift or Go source and do not require Go or Xcode. The `container` formula owns the plugin registration link inside its own Homebrew install root. Tagged Compose plugin formulae such as `container-compose-release-v0-2-0` currently pair with the moving `container-release` runtime formula. Detailed install instructions live in [`container-compose/INSTALL.md`](https://github.com/stephenlclarke/container-compose/blob/main/INSTALL.md).
 
 Install the latest `main` prebuilt:
 
@@ -52,9 +53,9 @@ brew services restart stephenlclarke/tap/container
 container compose version
 ```
 
-The `release` branch publishes `container-compose-release`. Tagged release
-branch copies publish branch-derived formula names such as
-`container-compose-release-v0-1-0`.
+The `release` branch publishes `container-compose-release`. Tagged Compose
+release branch copies publish branch-derived formula names such as
+`container-compose-release-v0-2-0`.
 
 For the latest stable release lane, install the matching release formulae:
 

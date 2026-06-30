@@ -6,11 +6,12 @@ This tap provides Homebrew formulae for Stephen Clarke's tools and games. For th
 | --- | --- | --- | --- |
 | Main | `container` | `container-compose` | release |
 | Latest stable release | `container-release` | `container-compose-release` | release |
-| Tagged release | `container-release-v0-1-0` style | `container-compose-release-v0-1-0` style | release |
+| Tagged Compose release | `container-release` | `container-compose-release-v0-2-0` style | release |
 
 The latest stable release lane uses the moving `homebrew-release` package tag,
-similar to a Docker `latest` tag. Tagged release formulae are for immutable
-release branch copies.
+similar to a Docker `latest` tag. Tagged Compose release formulae point at
+immutable Compose plugin release branch assets and currently pair with the
+moving `container-release` runtime formula.
 
 The runtime and plugin are the only Homebrew-installed pieces of the container stack. `containerization` is a Swift package dependency compiled into those packages, and `container-builder-shim` is consumed as a Linux/arm64 builder image pinned by `container` rather than as a macOS Homebrew formula. The tap tracks all four source repositories on `main` for maintenance visibility.
 
@@ -56,9 +57,9 @@ The `container` formula owns the plugin registration link inside its own
 Homebrew install root. Run the matching `container` formula's `post_install`
 hook after installing or upgrading `container-compose`.
 
-The `release` branch publishes `container-compose-release`. Tagged release
-branch copies publish branch-derived formula names such as
-`container-compose-release-v0-1-0`.
+The `release` branch publishes `container-compose-release`. Tagged Compose
+release branch copies publish branch-derived formula names such as
+`container-compose-release-v0-2-0`.
 
 For the latest stable release lane:
 
