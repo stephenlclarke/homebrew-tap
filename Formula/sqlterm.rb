@@ -7,8 +7,9 @@ class Sqlterm < Formula
   depends_on "unixodbc"
 
   def install
-    ENV.append "CGO_CFLAGS", "-I#{formula_opt_include("unixodbc")}"
-    ENV.append "CGO_LDFLAGS", "-L#{formula_opt_lib("unixodbc")}"
+    unixodbc = Formula["unixodbc"]
+    ENV.append "CGO_CFLAGS", "-I#{unixodbc.opt_include}"
+    ENV.append "CGO_LDFLAGS", "-L#{unixodbc.opt_lib}"
     system "go", "build", "-trimpath", "-o", bin/"sqlterm", "./cmd"
   end
 
