@@ -77,15 +77,15 @@ jobs:
             pull_request)
               gh api "repos/${GITHUB_REPOSITORY}/pulls/${{ github.event.pull_request.number }}/files" \
                 --paginate \
-                --jq '.[].filename' > "$changed_files"
+                --jq '.[] | select(.status != "removed") | .filename' > "$changed_files"
               ;;
             push)
               before="${{ github.event.before }}"
               after="${GITHUB_SHA}"
               if [[ "$before" =~ ^0+$ ]]; then
-                git diff-tree --no-commit-id --name-only -r "$after" > "$changed_files"
+                git diff-tree --no-commit-id --name-only --diff-filter=ACMR -r "$after" > "$changed_files"
               else
-                git diff --name-only "$before" "$after" > "$changed_files"
+                git diff --name-only --diff-filter=ACMR "$before" "$after" > "$changed_files"
               fi
               ;;
             *)
