@@ -3,7 +3,7 @@ class ContainerCompose < Formula
   homepage "https://github.com/stephenlclarke/container-compose"
   url "https://github.com/stephenlclarke/container-compose/releases/download/homebrew-main/container-compose-plugin-homebrew-main-release-arm64.tar.gz"
   version "main-release-425f66e8f9b5"
-  sha256 "2b5f9f662d133ef04ff2addad670e8d91b3836f47129ee9af5cf08148b17de2e"
+  sha256 "2bb228a04f2cf6d090afe256a229a08812a19cec48b36e39ea11bcd080681dde"
   license "Apache-2.0"
 
   depends_on arch: :arm64
