@@ -3,7 +3,7 @@ class ContainerComposePre < Formula
   homepage "https://github.com/stephenlclarke/container-compose"
   url "https://github.com/stephenlclarke/container-compose/releases/download/0.6.1-pre/container-compose-plugin-release-arm64.tar.gz"
   version "0.6.1-pre"
-  sha256 "65d74eadb573d32dd46c56b8a767d90b00717907ec5eeca54f6366bc65d37999"
+  sha256 "4421b460dc37641f4232c525dda00a59e9e5581b5ff832956df9d4f53af39688"
   license "Apache-2.0"
 
   depends_on arch: :arm64
