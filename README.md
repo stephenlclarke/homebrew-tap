@@ -10,9 +10,9 @@ brew tap stephenlclarke/tap
 
 The `container` / `container-compose` formulae are built from a four-repository preview stack:
 
-- [`container`](https://github.com/stephenlclarke/container): fork-backed runtime and CLI. The `container` formula follows `main`; `container-release` follows the moving `release` branch package.
-- [`container-compose`](https://github.com/stephenlclarke/container-compose): Compose plugin. The `container-compose` formula follows `main`; `container-compose-release` follows the matching moving `release` branch package; versioned release branch packages use names such as `container-compose-release-v0-2-0`.
-- [`containerization`](https://github.com/stephenlclarke/containerization): Swift runtime library consumed by both packages. Main packages use `main`; release packages use `release`.
+- [`container`](https://github.com/stephenlclarke/container): fork-backed runtime and CLI. The `container` formula follows the current fork-backed runtime package used by Compose.
+- [`container-compose`](https://github.com/stephenlclarke/container-compose): Compose plugin. The `container-compose` formula follows the latest stable semantic release; `container-compose-pre` follows the latest pre-release slice.
+- [`containerization`](https://github.com/stephenlclarke/containerization): Swift runtime library consumed by both packages.
 - [`container-builder-shim`](https://github.com/stephenlclarke/container-builder-shim): Go BuildKit bridge source. It is tracked here as a maintenance submodule, while `container` consumes an immutable builder image tag, currently `0.13.6`.
 
 The tap source submodules track those repositories on `main` so formula maintenance can see the current source state. User installs do not build from those submodules; they consume prebuilt release-quality package assets. Go outputs in the stack are release artifacts, not debug builds.
@@ -21,11 +21,9 @@ Homebrew metrics were refreshed on 2026-06-28 from the public [`install`](https:
 
 | Formula | Lane | Install command | Total installs | Requested installs |
 | --- | --- | --- | --- | --- |
-| `container` | `main` runtime | `brew install stephenlclarke/tap/container` | `3 / 3 / 3` | `3 / 3 / 3` |
-| `container-release` | moving `release` runtime | `brew install stephenlclarke/tap/container-release` | `5 / 5 / 5` | `5 / 5 / 5` |
-| `container-compose` | `main` Compose plugin | `brew install stephenlclarke/tap/container-compose` | `3 / 3 / 3` | `3 / 3 / 3` |
-| `container-compose-release` | moving `release` Compose plugin | `brew install stephenlclarke/tap/container-compose-release` | `14 / 14 / 14` | `14 / 14 / 14` |
-| `container-compose-release-v0-2-0` | tagged `release-v0.2.0` Compose plugin | `brew install stephenlclarke/tap/container-compose-release-v0-2-0` | `0 / 0 / 0` | `0 / 0 / 0` |
+| `container` | fork-backed runtime | `brew install stephenlclarke/tap/container` | `3 / 3 / 3` | `3 / 3 / 3` |
+| `container-compose` | stable Compose plugin | `brew install stephenlclarke/tap/container-compose` | `3 / 3 / 3` | `3 / 3 / 3` |
+| `container-compose-pre` | pre-release Compose plugin | `brew install stephenlclarke/tap/container-compose-pre` | `0 / 0 / 0` | `0 / 0 / 0` |
 
 ## container
 
@@ -36,15 +34,11 @@ brew install stephenlclarke/tap/container
 brew services start container
 ```
 
-The latest stable release lane is available as `container-release`. The
-`homebrew-release` package tag moves to the newest promoted release, like a
-stable `latest` tag.
-
 ## container-compose
 
-`container-compose` installs prebuilt Docker Compose style plugin assets for Apple's `container` CLI. Normal installs do not build Swift or Go source and do not require Go or Xcode. The `container` formula owns the plugin registration link inside its own Homebrew install root. Tagged Compose plugin formulae such as `container-compose-release-v0-2-0` currently pair with the moving `container-release` runtime formula. Detailed install instructions live in [`container-compose/INSTALL.md`](https://github.com/stephenlclarke/container-compose/blob/main/INSTALL.md).
+`container-compose` installs prebuilt Docker Compose style plugin assets for Apple's `container` CLI. Normal installs do not build Swift or Go source and do not require Go or Xcode. The `container` formula owns the plugin registration link inside its own Homebrew install root. Detailed install instructions live in [`container-compose/INSTALL.md`](https://github.com/stephenlclarke/container-compose/blob/main/INSTALL.md).
 
-Install the latest `main` prebuilt:
+Install the stable plugin:
 
 ```sh
 brew install stephenlclarke/tap/container-compose
@@ -53,17 +47,13 @@ brew services restart stephenlclarke/tap/container
 container compose version
 ```
 
-The `release` branch publishes `container-compose-release`. Tagged Compose
-release branch copies publish branch-derived formula names such as
-`container-compose-release-v0-2-0`.
-
-For the latest stable release lane, install the matching release formulae:
+Install the pre-release plugin only when testing the next development slice:
 
 ```sh
-brew install stephenlclarke/tap/container-release
-brew install stephenlclarke/tap/container-compose-release
-brew postinstall stephenlclarke/tap/container-release
-brew services restart stephenlclarke/tap/container-release
+brew uninstall --ignore-dependencies stephenlclarke/tap/container-compose
+brew install --formula stephenlclarke/tap/container-compose-pre
+brew postinstall stephenlclarke/tap/container
+brew services restart stephenlclarke/tap/container
 container compose version
 ```
 
@@ -111,4 +101,4 @@ The submodules are maintenance inputs for this aggregate tap, not user-facing in
 - `sources/fixdecoder_zig`: `main`
 - `sources/sqlterm`: `main`
 
-`container-compose`, `container`, `containerization`, and `container-builder-shim` development now happen on `main`; release Homebrew installs are supplied as release prebuilt assets from `release` and `release-*` branches where those lanes exist. Debug snapshot formulae are no longer part of the tap.
+`container-compose`, `container`, `containerization`, and `container-builder-shim` development now happen on `main`. Compose installs are supplied by the stable `container-compose` formula and the opt-in `container-compose-pre` formula. Debug snapshot and retired release-branch Compose formulae are no longer part of the active tap surface.

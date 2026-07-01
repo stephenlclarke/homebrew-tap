@@ -1,17 +1,11 @@
 # Installing From The Tap
 
-This tap provides Homebrew formulae for Stephen Clarke's tools and games. For the `container-compose` stack, choose one matching runtime and plugin lane:
+This tap provides Homebrew formulae for Stephen Clarke's tools and games. For the `container-compose` stack, use the fork-backed `container` runtime and choose one Compose plugin lane:
 
-| Lane | Runtime formula | Plugin formula | Build type |
+| Lane | Runtime formula | Plugin formula | Use when |
 | --- | --- | --- | --- |
-| Main | `container` | `container-compose` | release |
-| Latest stable release | `container-release` | `container-compose-release` | release |
-| Tagged Compose release | `container-release` | `container-compose-release-v0-2-0` style | release |
-
-The latest stable release lane uses the moving `homebrew-release` package tag,
-similar to a Docker `latest` tag. Tagged Compose release formulae point at
-immutable Compose plugin release branch assets and currently pair with the
-moving `container-release` runtime formula.
+| Stable | `container` | `container-compose` | Normal install and upgrade path. |
+| Pre-release | `container` | `container-compose-pre` | Testing the next `develop/VERSION` slice before promotion. |
 
 The runtime and plugin are the only Homebrew-installed pieces of the container stack. `containerization` is a Swift package dependency compiled into those packages, and `container-builder-shim` is consumed as a Linux/arm64 builder image pinned by `container` rather than as a macOS Homebrew formula. The tap tracks all four source repositories on `main` for maintenance visibility.
 
@@ -20,7 +14,7 @@ Detailed `container` migration guidance, including what to do when Apple's signe
 ## Requirements
 
 - Apple silicon Mac.
-- macOS 26 or newer for `container` and `container-compose`.
+- macOS Sequoia or newer for `container` and `container-compose`.
 - Homebrew.
 
 ## Tap
@@ -39,12 +33,9 @@ brew services start container
 container --version
 ```
 
-For the latest stable release runtime, use `container-release` and restart
-`container-release` instead.
-
 ## Install container-compose
 
-Install the latest `main` prebuilt:
+Install the stable plugin:
 
 ```sh
 brew install stephenlclarke/tap/container-compose
@@ -57,43 +48,40 @@ The `container` formula owns the plugin registration link inside its own
 Homebrew install root. Run the matching `container` formula's `post_install`
 hook after installing or upgrading `container-compose`.
 
-The `release` branch publishes `container-compose-release`. Tagged Compose
-release branch copies publish branch-derived formula names such as
-`container-compose-release-v0-2-0`.
-
-For the latest stable release lane:
-
-```sh
-brew install stephenlclarke/tap/container-release
-brew install stephenlclarke/tap/container-compose-release
-brew postinstall stephenlclarke/tap/container-release
-brew services restart stephenlclarke/tap/container-release
-container compose version
-```
-
 ## Switch Plugin Lanes
 
-Stop the service, uninstall the current runtime and plugin lane, then install the target lane:
+`container-compose` and `container-compose-pre` install the same command and plugin path, so uninstall one lane before installing the other.
 
 ```sh
-brew services stop container || true
-brew services stop container-release || true
-brew uninstall container container-release container-compose container-compose-release || true
-```
+# Stay on stable
+brew upgrade stephenlclarke/tap/container-compose
 
-Then run the install commands for the target lane.
+# Stay on pre-release
+brew upgrade stephenlclarke/tap/container-compose-pre
+
+# Switch stable -> pre-release
+brew uninstall --ignore-dependencies stephenlclarke/tap/container-compose
+brew install --formula stephenlclarke/tap/container-compose-pre
+brew postinstall stephenlclarke/tap/container
+brew services restart stephenlclarke/tap/container
+
+# Switch pre-release -> stable
+brew uninstall --ignore-dependencies stephenlclarke/tap/container-compose-pre
+brew install --formula stephenlclarke/tap/container-compose
+brew postinstall stephenlclarke/tap/container
+brew services restart stephenlclarke/tap/container
+```
 
 ## Upgrade
 
-Update the tap and reinstall the installed packages:
+Update the tap and upgrade the installed lane:
 
 ```sh
 brew update
-brew reinstall container
-brew reinstall container-compose
+brew upgrade stephenlclarke/tap/container stephenlclarke/tap/container-compose
 ```
 
-The `container` formula refreshes the plugin symlink during reinstall. If an
+Use `container-compose-pre` in the upgrade command if that is the installed lane. The `container` formula refreshes the plugin symlink during reinstall. If an
 older install still cannot find the plugin, run
 `brew postinstall stephenlclarke/tap/container`.
 
