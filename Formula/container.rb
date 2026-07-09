@@ -1,9 +1,9 @@
 class Container < Formula
   desc "Create and run Linux containers using lightweight virtual machines"
   homepage "https://apple.github.io/container/documentation/"
-  url "https://github.com/stephenlclarke/container/releases/download/homebrew-main-86-e5773f48cbd3/container-homebrew-main-release-arm64.tar.gz"
-  version "main-release.86.e5773f48cbd3"
-  sha256 "be64e61e5b03a4026e715caec759f795ac404d4c4798a4baa6dc0a8e8bfc7aa5"
+  url "https://github.com/stephenlclarke/container/releases/download/homebrew-main-87-bb5bc7f2e7e1/container-homebrew-main-release-arm64.tar.gz"
+  version "main-release.87.bb5bc7f2e7e1"
+  sha256 "bc1434feae5784d10bb7d3bd86391209780c873726f81fe4a62eab5a3af534dd"
   license "Apache-2.0"
 
   depends_on arch: :arm64
