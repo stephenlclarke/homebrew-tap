@@ -1,9 +1,9 @@
 class Container < Formula
   desc "Create and run Linux containers using lightweight virtual machines"
   homepage "https://apple.github.io/container/documentation/"
-  url "https://github.com/stephenlclarke/container/releases/download/homebrew-main-99-6d97ce9754f0/container-homebrew-main-release-arm64.tar.gz"
-  version "main-release.99.6d97ce9754f0"
-  sha256 "4dc21c943dceebc7a2b6411623c8e5c128d35a58782143e7259d986f279f58cc"
+  url "https://github.com/stephenlclarke/container/releases/download/homebrew-main-101-c31146e19937/container-homebrew-main-release-arm64.tar.gz"
+  version "main-release.101.c31146e19937"
+  sha256 "689f02eb0d6a9c707d88db243ed3e7315a9c676af5ea92f02909bce0749e1fa0"
   license "Apache-2.0"
 
   depends_on arch: :arm64
@@ -51,7 +51,6 @@ class Container < Formula
 
   service do
     run [opt_bin/"container", "system", "start"]
-    keep_alive true
     working_dir var
     log_path var/"log/container.log"
     error_log_path var/"log/container.log"
