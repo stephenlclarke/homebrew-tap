@@ -3,7 +3,7 @@ class Container < Formula
   homepage "https://apple.github.io/container/documentation/"
   url "https://github.com/stephenlclarke/container-compose/releases/download/0.6.69/container-release-arm64.tar.gz"
   version "0.6.69"
-  sha256 "d548292612034e4196a543de4b47e8cb3f44c03ae26958e67f8fb5535a80e33b"
+  sha256 "389b9ceadf8c9ab87a06519c384b41c8be38f728a023c9488a3b8b2907aeb551"
   license "Apache-2.0"
 
   depends_on arch: :arm64
