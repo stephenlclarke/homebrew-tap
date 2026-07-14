@@ -36,7 +36,7 @@ Complete install, upgrade, migration, and removal instructions live in
 
 ## Games
 
-`maze`, `mazewar`, `asteroids`, and `defender` build a native macOS app bundle from their current `main` source and install a launcher command.
+`maze`, `mazewar`, `bzflag`, `asteroids`, and `defender` build a native macOS app bundle from their current `main` source and install a launcher command.
 
 | Formula | Install command |
 | --- | --- |
@@ -44,6 +44,7 @@ Complete install, upgrade, migration, and removal instructions live in
 | `mazewar` | `brew install --HEAD stephenlclarke/tap/mazewar` |
 | `pacman` | `brew install stephenlclarke/tap/pacman` |
 | `battlezone` | `brew install stephenlclarke/tap/battlezone` |
+| `bzflag` | `brew install --HEAD stephenlclarke/tap/bzflag` |
 | `asteroids` | `brew install --HEAD stephenlclarke/tap/asteroids` |
 | `defender` | `brew install --HEAD stephenlclarke/tap/defender` |
 
@@ -74,6 +75,7 @@ The tap tracks these source repositories on `main`:
 - `sources/container-builder-shim`
 - `sources/pacman`
 - `sources/battlezone`
+- `sources/bzflag`
 - `sources/asteroids`
 - `sources/defender`
 - `sources/maze`

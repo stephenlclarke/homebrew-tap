@@ -58,3 +58,7 @@
 	path = sources/mazewar
 	url = https://github.com/stephenlclarke/mazewar.git
 	branch = main
+[submodule "sources/bzflag"]
+	path = sources/bzflag
+	url = https://github.com/stephenlclarke/bzflag.git
+	branch = main
