@@ -1,9 +1,9 @@
 class Container < Formula
   desc "Create and run Linux containers using lightweight virtual machines"
   homepage "https://apple.github.io/container/documentation/"
-  url "https://github.com/stephenlclarke/container-compose/releases/download/0.6.70/container-release-arm64.tar.gz"
-  version "0.6.70"
-  sha256 "e3ffb1576d1a45bab9ad00ebab5d3a87aa10877e53f98d39cb6c2c68fce43eb1"
+  url "https://github.com/stephenlclarke/container/releases/download/homebrew-main-132-f59753f359cd/container-homebrew-main-release-arm64.tar.gz"
+  version "main-release.132.f59753f359cd"
+  sha256 "98ffb2083219412dfb24ddbd4720e7e5adf86dfb2832a095289cb1009dacb426"
   license "Apache-2.0"
 
   depends_on arch: :arm64
@@ -40,8 +40,8 @@ class Container < Formula
 
   def caveats
     <<~EOS
-      This formula installs the stable release prebuilt package asset:
-        container-release-arm64.tar.gz
+      This formula installs the main lane prebuilt package asset:
+        container-homebrew-main-release-arm64.tar.gz
 
       If stephenlclarke/tap/container-compose is installed, this formula links
       the Compose plugin into:
