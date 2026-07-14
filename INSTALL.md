@@ -71,6 +71,8 @@ brew install stephenlclarke/tap/pacman
 brew install stephenlclarke/tap/battlezone
 brew install --HEAD stephenlclarke/tap/asteroids
 brew install --HEAD stephenlclarke/tap/defender
+brew install --HEAD stephenlclarke/tap/maze
+brew install --HEAD stephenlclarke/tap/mazewar
 brew install stephenlclarke/tap/fixdecoder-go
 brew install --HEAD stephenlclarke/tap/fixdecoder-java
 brew install stephenlclarke/tap/fixdecoder-rs

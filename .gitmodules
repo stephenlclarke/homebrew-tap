@@ -50,3 +50,11 @@
 	path = sources/sqlterm
 	url = https://github.com/stephenlclarke/sqlterm.git
 	branch = main
+[submodule "sources/maze"]
+	path = sources/maze
+	url = https://github.com/stephenlclarke/maze.git
+	branch = main
+[submodule "sources/mazewar"]
+	path = sources/mazewar
+	url = https://github.com/stephenlclarke/mazewar.git
+	branch = main
