@@ -3,7 +3,7 @@ class ContainerComposeCurrent < Formula
   homepage "https://github.com/stephenlclarke/container-compose"
   url "https://github.com/stephenlclarke/container-compose/releases/download/current/container-compose-plugin-current-b5d3d3d0d1b4-arm64.tar.gz"
   version "current.b5d3d3d0d1b4"
-  sha256 "d86aef5ecf0f6dd758b87b14d057efe492ade25c79c02f49198ca61827e68f38"
+  sha256 "3cfe963b766d00b99194efe188496a067cde75d063185ebb0b625a563b04672a"
   license "Apache-2.0"
 
   depends_on arch: :arm64

@@ -3,7 +3,7 @@ class ContainerCurrent < Formula
   homepage "https://apple.github.io/container/documentation/"
   url "https://github.com/stephenlclarke/container-compose/releases/download/current/container-current-b5d3d3d0d1b4-arm64.tar.gz"
   version "current.b5d3d3d0d1b4"
-  sha256 "756c0b23db958af818e4563c307ea68cb30340334ba2c80816d0fcf6a9f33367"
+  sha256 "d343166825bb78e9a5182ebbb48d3a16ab6704a8f5229ff1353a5e119bad3aca"
   license "Apache-2.0"
 
   depends_on arch: :arm64
