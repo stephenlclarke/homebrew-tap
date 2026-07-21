@@ -2,8 +2,8 @@ class MacSync < Formula
   desc "Curated Mac dotfile, package, secret, and repository snapshot sync tool"
   homepage "https://github.com/stephenlclarke/mac-sync"
   url "https://github.com/stephenlclarke/mac-sync/releases/download/homebrew-main/mac-sync-main-release-arm64.tar.gz"
-  version "main-release-9949da3c4147"
-  sha256 "e69394173da02cd76ce1f2a6f664eaf1717059f63368722b57914c12527a772c"
+  version "main-release-df9e87075925"
+  sha256 "2d0b7904be97e472eb529dd5c1e21730103492862a06e67deed0c5e36eff415b"
   license "AGPL-3.0-or-later"
 
   depends_on "age"
