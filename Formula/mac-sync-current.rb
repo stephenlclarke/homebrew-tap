@@ -1,0 +1,90 @@
+class MacSyncCurrent < Formula
+  desc "Curated Mac dotfile, package, secret, and repository snapshot sync tool"
+  homepage "https://github.com/stephenlclarke/mac-sync"
+  url "https://github.com/stephenlclarke/mac-sync/releases/download/current/mac-sync-current-2e478415dfc6-arm64.tar.gz"
+  version "current.17.2e478415dfc6"
+  sha256 "0b58f56870efbd0f0c53020f55bf1b25a8ef1f2d04a3a19a9ffc7d11caf7b692"
+  license "AGPL-3.0-or-later"
+
+  depends_on "age"
+  depends_on arch: :arm64
+  depends_on "git"
+  depends_on "gnu-tar"
+  depends_on macos: :ventura
+  depends_on "rsync"
+
+  conflicts_with "mac-sync", because: "both install the mac-sync executables"
+
+  def install
+    package_root = if (buildpath/"mac-sync").directory?
+      buildpath/"mac-sync"
+    else
+      buildpath
+    end
+
+    payload = if (package_root/"bin").directory?
+      package_root/"bin"
+    else
+      package_root
+    end
+
+    bin.install payload/"mac-sync"
+    bin.install payload/"mac-spinner"
+    prefix.install package_root/"MacSync.app"
+  end
+
+  def caveats
+    <<~EOS
+      This formula installs the current prebuilt package asset:
+        mac-sync-current-2e478415dfc6-arm64.tar.gz
+
+      The Mac Sync app is installed into this formula's prefix. Launch it with:
+        open "#{opt_prefix}/MacSync.app"
+
+      Homebrew also installs Mac Sync's required command-line dependencies:
+      age, GNU tar, Git, and rsync. Apple-provided macOS tools cover Keychain
+      access and the remaining POSIX utilities.
+
+      On first launch, Mac Sync guides you to choose or clone a mac-sync-data
+      checkout. It saves only that path for the CLI/service; Git credentials
+      remain in SSH or Keychain. The default installed workflow does not use
+      the legacy dot-files checkout.
+      The CLI remains available as:
+        mac-sync --help
+
+      For a custom app-managed schedule, use Settings > Automatic sync.
+      Stop the Homebrew service first so only one automatic sync job runs.
+
+      The Homebrew service remains an hourly alternative:
+        brew services start mac-sync-current
+        brew services restart mac-sync-current
+        brew services stop mac-sync-current
+    EOS
+  end
+
+  service do
+    run [opt_bin/"mac-sync", "run"]
+    run_type :interval
+    interval 3600
+    environment_variables PATH: std_service_path_env
+    working_dir var
+    log_path var/"log/mac-sync.log"
+    error_log_path var/"log/mac-sync.log"
+  end
+
+  test do
+    assert_match "USAGE:", shell_output("#{bin}/mac-sync --help")
+    assert_match "brew smoke", shell_output("#{bin}/mac-spinner --message 'brew smoke' --pending")
+    assert_predicate formula_opt_bin("age")/"age", :executable?
+    assert_predicate formula_opt_bin("age")/"age-keygen", :executable?
+    assert_predicate formula_opt_bin("git")/"git", :executable?
+    assert_predicate formula_opt_bin("gnu-tar")/"gtar", :executable?
+    assert_predicate formula_opt_bin("rsync")/"rsync", :executable?
+    assert_equal(
+      "#{HOMEBREW_PREFIX}/bin:#{HOMEBREW_PREFIX}/sbin:/usr/bin:/bin:/usr/sbin:/sbin",
+      service.to_hash.fetch(:environment_variables).fetch(:PATH),
+    )
+    assert_predicate prefix/"MacSync.app/Contents/MacOS/MacSync", :executable?
+    assert_path_exists prefix/"MacSync.app/Contents/Resources/MacSync.icns"
+  end
+end
