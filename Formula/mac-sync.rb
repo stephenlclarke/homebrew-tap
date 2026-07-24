@@ -1,9 +1,9 @@
 class MacSync < Formula
   desc "Curated Mac dotfile, package, secret, and repository snapshot sync tool"
   homepage "https://github.com/stephenlclarke/mac-sync"
-  url "https://github.com/stephenlclarke/mac-sync/releases/download/homebrew-main/mac-sync-main-release-arm64.tar.gz"
-  version "main-release-83acf25915c1"
-  sha256 "1c014a299656c4e98a2a7e1697db1d64ce8db2999a497c5c0cc077f1b44e1650"
+  url "https://github.com/stephenlclarke/mac-sync/releases/download/0.1.0/mac-sync-release-arm64.tar.gz"
+  version "0.1.0"
+  sha256 "777bcbb32faab5eeb857bf5aa9b82892abe5e4523ed6c012d3f9a2e8f5cd97f8"
   license "AGPL-3.0-or-later"
 
   depends_on "age"
@@ -12,6 +12,8 @@ class MacSync < Formula
   depends_on "gnu-tar"
   depends_on macos: :ventura
   depends_on "rsync"
+
+  conflicts_with "mac-sync-current", because: "both install the mac-sync executables"
 
   def install
     package_root = if (buildpath/"mac-sync").directory?
@@ -33,24 +35,24 @@ class MacSync < Formula
 
   def caveats
     <<~EOS
-      This formula installs the main lane prebuilt package asset:
-        mac-sync-main-release-arm64.tar.gz
+      This formula installs the stable 0.1.0 prebuilt package asset:
+        mac-sync-release-arm64.tar.gz
 
       The Mac Sync app is installed into this formula's prefix. Launch it with:
-        open "$(brew --prefix mac-sync)/MacSync.app"
+        open "#{opt_prefix}/MacSync.app"
 
       Homebrew also installs Mac Sync's required command-line dependencies:
       age, GNU tar, Git, and rsync. Apple-provided macOS tools cover Keychain
       access and the remaining POSIX utilities.
 
-      On first launch, Mac Sync guides you to choose an existing mac-sync-data
-      checkout or create one. It saves only that path for the CLI/service; Git
-      credentials remain in SSH or Keychain. The legacy dot-files checkout is
-      not used by this version.
+      On first launch, Mac Sync guides you to choose or clone a mac-sync-data
+      checkout. It saves only that path for the CLI/service; Git credentials
+      remain in SSH or Keychain. The default installed workflow does not use
+      the legacy dot-files checkout.
       The CLI remains available as:
         mac-sync --help
 
-      For a custom app-managed schedule, use Settings → Automatic sync.
+      For a custom app-managed schedule, use Settings > Automatic sync.
       Stop the Homebrew service first so only one automatic sync job runs.
 
       The Homebrew service remains an hourly alternative:
