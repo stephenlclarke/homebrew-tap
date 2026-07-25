@@ -1,9 +1,9 @@
 class MacSync < Formula
   desc "Curated Mac dotfile, package, secret, and repository snapshot sync tool"
   homepage "https://github.com/stephenlclarke/mac-sync"
-  url "https://github.com/stephenlclarke/mac-sync/releases/download/0.1.0/mac-sync-release-arm64.tar.gz"
-  version "0.1.0"
-  sha256 "777bcbb32faab5eeb857bf5aa9b82892abe5e4523ed6c012d3f9a2e8f5cd97f8"
+  url "https://github.com/stephenlclarke/mac-sync/releases/download/1.0.0/mac-sync-release-arm64.tar.gz"
+  version "1.0.0"
+  sha256 "ca4187ef47384b3472a93dbc7796f8fab7744793d7982b957fa7d0891e51afdf"
   license "AGPL-3.0-or-later"
 
   depends_on "age"
@@ -35,7 +35,7 @@ class MacSync < Formula
 
   def caveats
     <<~EOS
-      This formula installs the stable 0.1.0 prebuilt package asset:
+      This formula installs the stable 1.0.0 prebuilt package asset:
         mac-sync-release-arm64.tar.gz
 
       The Mac Sync app is installed into this formula's prefix. Launch it with:
