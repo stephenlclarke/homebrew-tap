@@ -1,9 +1,9 @@
 class ContainerComposeCurrent < Formula
   desc "Docker Compose style plugin for Apple's container CLI"
   homepage "https://github.com/stephenlclarke/container-compose"
-  url "https://github.com/stephenlclarke/container-compose/releases/download/current/container-compose-plugin-current-9f35d94406a9-arm64.tar.gz"
-  version "current.873.9f35d94406a9"
-  sha256 "df895346e665b4cd48f11c4c3f097c0cff54d717056152ef42c234451d79123e"
+  url "https://github.com/stephenlclarke/container-compose/releases/download/current/container-compose-plugin-current-caa6ce5b5950-arm64.tar.gz"
+  version "current.876.caa6ce5b5950"
+  sha256 "f7899a12c402f9b4dd33c2e010b6510497f2fe706fe8c81d165d7512fe496f80"
   license "Apache-2.0"
 
   depends_on arch: :arm64
@@ -29,7 +29,7 @@ class ContainerComposeCurrent < Formula
         brew services restart stephenlclarke/tap/container-current
 
       This formula installs the current build prebuilt package asset:
-        container-compose-plugin-current-9f35d94406a9-arm64.tar.gz
+        container-compose-plugin-current-caa6ce5b5950-arm64.tar.gz
     EOS
   end
 
