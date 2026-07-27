@@ -2,8 +2,8 @@ class ContainerCurrent < Formula
   desc "Create and run Linux containers using lightweight virtual machines"
   homepage "https://apple.github.io/container/documentation/"
   url "https://github.com/stephenlclarke/container-compose/releases/download/current/container-current-5a7490b5976f-arm64.tar.gz"
-  version "current.896.5a7490b5976f"
-  sha256 "bad3f6d57a4dfd798664d3985968a5e1a3740934a3a3e1f85b99b4c7f529922a"
+  version "current.897.5a7490b5976f"
+  sha256 "0e2c626874ced714dcdb5df93223e2e9eebc6626d6f4693622ab466cdd8cd6a5"
   license "Apache-2.0"
 
   depends_on arch: :arm64
