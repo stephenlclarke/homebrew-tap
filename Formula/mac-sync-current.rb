@@ -1,9 +1,9 @@
 class MacSyncCurrent < Formula
   desc "Curated Mac dotfile, package, secret, and repository snapshot sync tool"
   homepage "https://github.com/stephenlclarke/mac-sync"
-  url "https://github.com/stephenlclarke/mac-sync/releases/download/current/mac-sync-current-fceda40d3162-arm64.tar.gz"
-  version "current.24.fceda40d3162"
-  sha256 "44bc2bef261f9493b3575110aaa61c844b629f8c00ed4dd188777badb5f00261"
+  url "https://github.com/stephenlclarke/mac-sync/releases/download/current/mac-sync-current-641ded63e78b-arm64.tar.gz"
+  version "current.25.641ded63e78b"
+  sha256 "2d6b3523974bd0dcfaa733fee911742bfeb7c5a8607bbffeb7be1cd393742d12"
   license "AGPL-3.0-or-later"
 
   depends_on "age"
@@ -12,8 +12,6 @@ class MacSyncCurrent < Formula
   depends_on "gnu-tar"
   depends_on macos: :ventura
   depends_on "rsync"
-
-  conflicts_with "mac-sync", because: "both install the mac-sync executables"
 
   def install
     package_root = if (buildpath/"mac-sync").directory?
@@ -36,7 +34,7 @@ class MacSyncCurrent < Formula
   def caveats
     <<~EOS
       This formula installs the current prebuilt package asset:
-        mac-sync-current-fceda40d3162-arm64.tar.gz
+        mac-sync-current-641ded63e78b-arm64.tar.gz
 
       The Mac Sync app is installed into this formula's prefix. Launch it with:
         open "#{opt_prefix}/MacSync.app"
