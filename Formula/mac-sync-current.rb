@@ -1,9 +1,9 @@
 class MacSyncCurrent < Formula
   desc "Curated Mac dotfile, package, secret, and repository snapshot sync tool"
   homepage "https://github.com/stephenlclarke/mac-sync"
-  url "https://github.com/stephenlclarke/mac-sync/releases/download/current/mac-sync-current-641ded63e78b-arm64.tar.gz"
-  version "current.25.641ded63e78b"
-  sha256 "2d6b3523974bd0dcfaa733fee911742bfeb7c5a8607bbffeb7be1cd393742d12"
+  url "https://github.com/stephenlclarke/mac-sync/releases/download/current/mac-sync-current-f40beb5afd6f-arm64.tar.gz"
+  version "current.30.f40beb5afd6f"
+  sha256 "9fff666224aaa327f32052c9d20a1ed82bad3ecb79608e7772685c3badd25f36"
   license "AGPL-3.0-or-later"
 
   depends_on "age"
@@ -34,10 +34,10 @@ class MacSyncCurrent < Formula
   def caveats
     <<~EOS
       This formula installs the current prebuilt package asset:
-        mac-sync-current-641ded63e78b-arm64.tar.gz
+        mac-sync-current-f40beb5afd6f-arm64.tar.gz
 
-      The Mac Sync app is installed into this formula's prefix. Launch it with:
-        open "#{opt_prefix}/MacSync.app"
+      Launch the installed Mac Sync app with:
+        mac-sync ui
 
       Homebrew also installs Mac Sync's required command-line dependencies:
       age, GNU tar, Git, and rsync. Apple-provided macOS tools cover Keychain
