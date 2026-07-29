@@ -2,7 +2,6 @@ class Devcontainer < Formula
   desc "VS Code Dev Containers compatibility for Apple container"
   homepage "https://github.com/stephenlclarke/devcontainer"
   url "https://github.com/stephenlclarke/devcontainer/releases/download/1.0.0/devcontainer-release-arm64.tar.gz"
-  version "1.0.0"
   sha256 "a6dd26b883de6056b12cc65e87ad93ebc1484d6f5cbbfab1dba4aa6e87ea3fdf"
   license "Apache-2.0"
 
@@ -10,7 +9,6 @@ class Devcontainer < Formula
   depends_on "docker"
   depends_on "docker-compose"
   depends_on macos: :tahoe
-  conflicts_with "devcontainer-current", because: "both install devcontainer commands"
 
   def install
     bin.install "bin/devcontainer"
