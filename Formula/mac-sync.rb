@@ -1,9 +1,9 @@
 class MacSync < Formula
   desc "Curated Mac dotfile, package, secret, and repository snapshot sync tool"
   homepage "https://github.com/stephenlclarke/mac-sync"
-  url "https://github.com/stephenlclarke/mac-sync/releases/download/1.0.0/mac-sync-release-arm64.tar.gz"
-  version "1.0.0"
-  sha256 "ca4187ef47384b3472a93dbc7796f8fab7744793d7982b957fa7d0891e51afdf"
+  url "https://github.com/stephenlclarke/mac-sync/releases/download/1.0.2/mac-sync-release-arm64.tar.gz"
+  version "1.0.2"
+  sha256 "6d8a292dc6c671d0444a5dbaf56feb64ae5dab45ba1bfd9188f08746353e5db6"
   license "AGPL-3.0-or-later"
 
   depends_on "age"
@@ -12,8 +12,6 @@ class MacSync < Formula
   depends_on "gnu-tar"
   depends_on macos: :ventura
   depends_on "rsync"
-
-  conflicts_with "mac-sync-current", because: "both install the mac-sync executables"
 
   def install
     package_root = if (buildpath/"mac-sync").directory?
@@ -35,11 +33,11 @@ class MacSync < Formula
 
   def caveats
     <<~EOS
-      This formula installs the stable 1.0.0 prebuilt package asset:
+      This formula installs the stable 1.0.2 prebuilt package asset:
         mac-sync-release-arm64.tar.gz
 
-      The Mac Sync app is installed into this formula's prefix. Launch it with:
-        open "#{opt_prefix}/MacSync.app"
+      Launch the installed Mac Sync app with:
+        mac-sync ui
 
       Homebrew also installs Mac Sync's required command-line dependencies:
       age, GNU tar, Git, and rsync. Apple-provided macOS tools cover Keychain
