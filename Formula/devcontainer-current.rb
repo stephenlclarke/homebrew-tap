@@ -1,9 +1,9 @@
 class DevcontainerCurrent < Formula
   desc "VS Code Dev Containers compatibility for Apple container"
   homepage "https://github.com/stephenlclarke/devcontainer"
-  url "https://github.com/stephenlclarke/devcontainer/releases/download/current/devcontainer-current-37ae0a873d41-arm64.tar.gz"
-  version "current.82.37ae0a873d41"
-  sha256 "8244824dcc90e30e48dcce8ef3f22bab580abc4103356ec483d9388bb45f0404"
+  url "https://github.com/stephenlclarke/devcontainer/releases/download/current/devcontainer-current-b31e80b2b9c0-arm64.tar.gz"
+  version "current.89.b31e80b2b9c0"
+  sha256 "5f565334a054bd705f8b2303016bbf6f999228b77eff04e29d3d48419add0398"
   license "Apache-2.0"
 
   depends_on arch: :arm64
