@@ -1,9 +1,9 @@
 class Container < Formula
   desc "Create and run Linux containers using lightweight virtual machines"
   homepage "https://apple.github.io/container/documentation/"
-  url "https://github.com/stephenlclarke/container-compose/releases/download/0.12.0/container-release-arm64.tar.gz"
-  version "0.12.0"
-  sha256 "a23b1d939227126582cef4f6c7ac148ef1ac255fd82ad7d0bb3509048b33839c"
+  url "https://github.com/stephenlclarke/container-compose/releases/download/0.13.0/container-release-arm64.tar.gz"
+  version "0.13.0"
+  sha256 "cd191d501bb3e9e60ccf4552460c71b8046c8937b15b2a2ed73e1fefde226e56"
   license "Apache-2.0"
 
   depends_on arch: :arm64
