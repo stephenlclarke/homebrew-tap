@@ -1,9 +1,9 @@
 class ContainerCurrent < Formula
   desc "Create and run Linux containers using lightweight virtual machines"
   homepage "https://apple.github.io/container/documentation/"
-  url "https://github.com/stephenlclarke/container-compose/releases/download/current/container-current-c34844d2b269-arm64.tar.gz"
-  version "current.1199.c34844d2b269"
-  sha256 "ee7422d8f0e3e38861ea059fae92deef0cc0517942b72f01ec33266c34ed70e1"
+  url "https://github.com/stephenlclarke/container-compose/releases/download/current/container-current-4b8e9e7e0230-arm64.tar.gz"
+  version "current.1200.4b8e9e7e0230"
+  sha256 "76df0e8e5112ffe97850905a555823f04ba51bc535d60c0145ab1e1412f0c084"
   license "Apache-2.0"
 
   depends_on arch: :arm64
@@ -41,7 +41,7 @@ class ContainerCurrent < Formula
   def caveats
     <<~EOS
       This formula installs the current build prebuilt package asset:
-        container-current-c34844d2b269-arm64.tar.gz
+        container-current-4b8e9e7e0230-arm64.tar.gz
 
       If stephenlclarke/tap/container-compose-current is installed, this formula links
       the Compose plugin into:
