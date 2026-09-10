@@ -1,9 +1,9 @@
 class ContainerComposeCurrent < Formula
   desc "Docker Compose style plugin for Apple's container CLI"
   homepage "https://github.com/stephenlclarke/container-compose"
-  url "https://github.com/stephenlclarke/container-compose/releases/download/current/container-compose-plugin-current-5bb5441c6719-arm64.tar.gz"
-  version "current.1207.5bb5441c6719"
-  sha256 "4c345ac901ba6e9f8812b601dd5cd7f3bf9714e33c84235078b3da67eee971f9"
+  url "https://github.com/stephenlclarke/container-compose/releases/download/current/container-compose-plugin-current-d0a83bb8580c-arm64.tar.gz"
+  version "current.1210.d0a83bb8580c"
+  sha256 "a745107bb8e69e9edb2f9412b74a1360a26b93286ea8ae4c32fa722d075b9828"
   license "Apache-2.0"
 
   depends_on arch: :arm64
@@ -29,12 +29,12 @@ class ContainerComposeCurrent < Formula
         brew services restart stephenlclarke/tap/container-current
 
       This formula installs the current build prebuilt package asset:
-        container-compose-plugin-current-5bb5441c6719-arm64.tar.gz
+        container-compose-plugin-current-d0a83bb8580c-arm64.tar.gz
     EOS
   end
 
   test do
-    assert_match "0.14.2", shell_output("#{bin}/container-compose version --short")
+    assert_match "0.14.3", shell_output("#{bin}/container-compose version --short")
     assert_path_exists libexec/"container-plugins/compose/config.toml"
     assert_predicate libexec/"container-plugins/compose/resources/compose-normalizer", :executable?
   end
