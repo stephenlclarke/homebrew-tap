@@ -48,6 +48,8 @@ Complete install, upgrade, migration, and removal instructions live in
 | `asteroids` | `brew install --HEAD stephenlclarke/tap/asteroids` |
 | `defender` | `brew install --HEAD stephenlclarke/tap/defender` |
 
+Pacman installs the native wgpu window build from a checksum-verified source archive pinned to the published `wgpu` commit. Run `pacman --help` to check the installation, then `pacman` to play. Use `brew upgrade stephenlclarke/tap/pacman` after `brew update` to replace an older Kitty build. The optional `--HEAD` installation follows the `wgpu` branch until the port is integrated into `main`.
+
 ## FIX Decoders
 
 The language-suffixed binaries can coexist:
