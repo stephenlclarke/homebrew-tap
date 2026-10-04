@@ -48,6 +48,8 @@ Complete install, upgrade, migration, and removal instructions live in
 | `asteroids` | `brew install --HEAD stephenlclarke/tap/asteroids` |
 | `defender` | `brew install --HEAD stephenlclarke/tap/defender` |
 
+Battlezone installs the native wgpu window build from a checksum-verified source archive. Run `battlezone --help` to check the installation, then `battlezone` to play. Use `brew upgrade stephenlclarke/tap/battlezone` after `brew update` to replace an older Kitty build. Its optional `--HEAD` installation follows `develop` until the port is integrated into `main`.
+
 Pacman installs the native wgpu window build from a checksum-verified source archive pinned to the published `wgpu` commit. Run `pacman --help` to check the installation, then `pacman` to play. Use `brew upgrade stephenlclarke/tap/pacman` after `brew update` to replace an older Kitty build. The optional `--HEAD` installation follows the `wgpu` branch until the port is integrated into `main`.
 
 ## FIX Decoders
