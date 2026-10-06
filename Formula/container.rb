@@ -1,12 +1,24 @@
+require "digest"
+
 class Container < Formula
   desc "Create and run Linux containers using lightweight virtual machines"
   homepage "https://apple.github.io/container/documentation/"
-  url "https://github.com/stephenlclarke/container-compose/releases/download/0.15.1/container-release-arm64.tar.gz"
-  sha256 "6620df9bca51150d2406d68f58a1aa0208d600ecf7fa0ff0b3dca0e241927e16"
+  url "https://github.com/stephenlclarke/container-compose/releases/download/0.16.0/container-release-arm64.tar.gz"
+  sha256 "d4a9bd8e9d332b0bfbf67fc5b0b3a99c977b66d6cc50f5954b36f3263a2cf696"
   license "Apache-2.0"
 
   depends_on arch: :arm64
   depends_on macos: :sequoia
+
+  resource "release-notices" do
+    url "https://github.com/stephenlclarke/container-compose/releases/download/0.16.0/container-runtime-notices.tar.gz"
+    sha256 "2f3b9585b320bb33ed9d6fd136f35f2524a24f13a7d35e1c3cad790c15a98192"
+  end
+
+  resource "signed-payload" do
+    url "https://github.com/stephenlclarke/container-compose/releases/download/0.16.0/container-release-arm64.tar.gz"
+    sha256 "d4a9bd8e9d332b0bfbf67fc5b0b3a99c977b66d6cc50f5954b36f3263a2cf696"
+  end
 
   def install
     bin.install "bin/container"
@@ -20,27 +32,176 @@ class Container < Formula
     generate_completions_from_executable bin/"container", "--generate-completion-script"
 
     bin.env_script_all_files libexec/"bin", CONTAINER_INSTALL_ROOT: opt_prefix
+
+    resource("release-notices").stage do
+      notice_names = ["LICENSE", "THIRD-PARTY-NOTICES.md", "SOURCE-AVAILABILITY.md"]
+      notice_files = Pathname.pwd.children.sort
+      if notice_files.map { |file| file.basename.to_s }.sort != notice_names.sort
+        odie "Runtime release notices have an unexpected layout"
+      end
+      notice_files.each do |file|
+        odie "Runtime release notice is not a regular text file" if !file.file? || file.symlink?
+        text = File.read(file, encoding: "UTF-8")
+        if !text.valid_encoding? || text.empty? || text.include?("\0")
+          odie "Runtime release notice is not nonempty UTF-8 text"
+        end
+      end
+      (libexec/"share/licenses/container").install notice_files
+    end
   end
 
+  # Keep explicit ownership and alias checks that the declarative step DSL cannot express.
   def post_install
-    system libexec/"ensure-container-stopped.sh", "-a"
+    resource("signed-payload").stage do
+      source_root = Pathname.pwd.realpath
+      restore_signed_files(source_root, [
+        %w[
+          bin/container
+          libexec/bin/container
+          6cdefe21e349b76dd3e91a064974c6889a6a79e513e84a8b63f1303ffbacdf1a
+        ],
+        %w[
+          bin/container-engine
+          libexec/bin/container-engine
+          ac5b4714c1843fcff7c921e1b5f779e0541c9facf556a5e4cf2f3fd1ab281741
+        ],
+        %w[
+          bin/container-apiserver
+          libexec/bin/container-apiserver
+          4648b612e7dea3dde8026ace2d31dc6ba50009eba37e098682a47c5c8dc9d3a8
+        ],
+        %w[
+          libexec/container/plugins/k8s/bin/k8s
+          libexec/container/plugins/k8s/bin/k8s
+          08fe1627e1a2bf2c7df70a7f1ce94f412469c543abd7d8e2e3c079e454e2a992
+        ],
+        %w[
+          libexec/container/plugins/container-runtime-linux/bin/container-runtime-linux
+          libexec/container/plugins/container-runtime-linux/bin/container-runtime-linux
+          b9471ca04dfdd61d2b9718c6fe72d59ea3bb80ed076babbd2abc319db794ddbe
+        ],
+        %w[
+          libexec/container/plugins/machine-apiserver/bin/machine-apiserver
+          libexec/container/plugins/machine-apiserver/bin/machine-apiserver
+          c1197f4286da4661c149b7fa04c139f0032a50c83b5f853654a0b77457775ebf
+        ],
+        %w[
+          libexec/container/plugins/container-core-images/bin/container-core-images
+          libexec/container/plugins/container-core-images/bin/container-core-images
+          2a294967dd59836d02520632274128fa76057ed8f3d318973c2026fad9aaaadc
+        ],
+        %w[
+          libexec/container/plugins/container-network-vmnet/bin/container-network-vmnet
+          libexec/container/plugins/container-network-vmnet/bin/container-network-vmnet
+          cd7dd0d979f4396d55500c28015f13954bd459b13bb0b15e5b3d5ffb4150c32c
+        ],
+        %w[
+          libexec/container/helpers/container-semantic-helper
+          libexec/container/helpers/container-semantic-helper
+          c0194d0fb19da77b2a491c2c8c3b51271adaecd6ff8cb31e96f5df42c44e427f
+        ],
+      ])
+    end
     compose_plugin = HOMEBREW_PREFIX/"opt/container-compose/libexec/container-plugins/compose"
-    plugin_dir = opt_prefix/"libexec/container-plugins"
-    if compose_plugin.exist?
-      plugin_dir.mkpath
-      plugin_link = plugin_dir/"compose"
-      if plugin_link.symlink? || plugin_link.file?
-        rm plugin_link
-      elsif plugin_link.directory?
-        rm_r plugin_link
+    return unless compose_plugin.directory?
+
+    # Register only the installed plugin in this formula's own keg. Never stop
+    # services or replace an existing foreign file, directory, or link.
+    runtime_root = prefix.realpath
+    compose_root = (HOMEBREW_CELLAR/"container-compose").realpath
+    if runtime_root != prefix || File.stat(runtime_root).uid != Process.uid
+      odie "Runtime keg ownership changed"
+    end
+    compose_keg = (HOMEBREW_PREFIX/"opt/container-compose").realpath
+    if compose_keg.parent != compose_root ||
+       compose_plugin.realpath != compose_keg/"libexec/container-plugins/compose"
+      odie "Compose plugin escapes its installed keg"
+    end
+    odie "Compose plugin ownership changed" if File.stat(compose_plugin.realpath).uid != Process.uid
+    plugin_parent = prefix/"libexec"
+    if !plugin_parent.directory? || plugin_parent.symlink? || plugin_parent.realpath != plugin_parent
+      odie "Runtime plugin parent is aliased"
+    end
+    plugin_dir = plugin_parent/"container-plugins"
+    if plugin_dir.exist? || plugin_dir.symlink?
+      if !plugin_dir.directory? || plugin_dir.symlink? || plugin_dir.realpath != plugin_dir
+        odie "Runtime plugin directory is aliased"
       end
-      ln_s compose_plugin, plugin_link
+    else
+      plugin_dir.mkpath
+    end
+    odie "Runtime plugin directory ownership changed" if File.stat(plugin_dir).uid != Process.uid
+    plugin_link = plugin_dir/"compose"
+    if plugin_link.symlink?
+      if plugin_link.readlink != compose_plugin || plugin_link.realpath != compose_plugin.realpath
+        odie "Refusing to replace a foreign Compose link"
+      end
+      return
+    end
+    odie "Refusing to replace an existing Compose entry" if plugin_link.exist?
+    ln_s compose_plugin, plugin_link
+  end
+
+  def restore_signed_files(source_root, files)
+    runtime_root = prefix.realpath
+    if runtime_root != prefix || File.stat(runtime_root).uid != Process.uid
+      odie "Signed payload destination keg is aliased"
+    end
+    admitted = files.map do |source_name, destination_name, expected|
+      escaped = [source_name, destination_name].any? do |name|
+        Pathname.new(name).absolute? || name.split("/").include?("..")
+      end
+      if escaped
+        odie "Signed payload path escapes its admitted root"
+      end
+      source = source_root/source_name
+      destination = prefix/destination_name
+      if !source.file? || source.symlink? || source.realpath != source ||
+         Digest::SHA256.file(source).hexdigest != expected
+        odie "Immutable signed payload source differs"
+      end
+      if !destination.file? || destination.symlink? || File.lstat(destination).nlink != 1 ||
+         File.stat(destination).uid != Process.uid
+        odie "Signed payload destination is not an owned regular file"
+      end
+      parent = destination.parent
+      until parent == prefix
+        if !parent.directory? || parent.symlink? || parent.realpath != parent || File.stat(parent).uid != Process.uid
+          odie "Signed payload destination parent is aliased"
+        end
+        parent = parent.parent
+      end
+      [source, destination, expected]
+    end
+    admitted.each do |source, destination, expected|
+      temporary = destination.parent/".#{destination.basename}.signed-restore-#{Process.pid}"
+      created = nil
+      begin
+        File.open(temporary, File::WRONLY | File::CREAT | File::EXCL | File::NOFOLLOW, 0755) do |output|
+          created = [output.stat.dev, output.stat.ino]
+          File.open(source, File::RDONLY | File::NOFOLLOW) { |input| IO.copy_stream(input, output) }
+          output.flush
+          output.fsync
+        end
+        odie "Restored signed payload bytes differ" if Digest::SHA256.file(temporary).hexdigest != expected
+        if destination.symlink? || !destination.file? || File.lstat(destination).nlink != 1 ||
+           destination.parent.realpath != destination.parent
+          odie "Signed payload destination changed before replacement"
+        end
+        File.rename(temporary, destination)
+        odie "Installed signed payload bytes differ" if Digest::SHA256.file(destination).hexdigest != expected
+      ensure
+        if created && temporary.exist? && !temporary.symlink? &&
+           [File.lstat(temporary).dev, File.lstat(temporary).ino] == created
+          File.unlink(temporary)
+        end
+      end
     end
   end
 
   def caveats
     <<~EOS
-      This formula installs the stable release prebuilt package asset:
+      This formula installs the stable prebuilt package asset:
         container-release-arm64.tar.gz
 
       If stephenlclarke/tap/container-compose is installed, this formula links
@@ -57,11 +218,16 @@ class Container < Formula
   end
 
   test do
-    assert_match "container CLI version", shell_output("#{bin}/container --version")
+    version_output = shell_output("#{bin}/container --version")
+    assert_match "container CLI version 0.0.0 (", version_output
+    assert_match(/(?:\(|, )commit: f86fea2(?:, |\))/, version_output)
     assert_match "List running containers", shell_output("#{bin}/container list --help")
     assert_predicate bin/"container-engine", :executable?
     assert_predicate libexec/"container/helpers/container-semantic-helper", :executable?
     assert_path_exists libexec/"container/services/journald/container-journald-service.oci.tar"
     assert_path_exists libexec/"container/services/gelf/container-gelf-service.oci.tar"
+    assert_path_exists libexec/"share/licenses/container/LICENSE"
+    assert_path_exists libexec/"share/licenses/container/THIRD-PARTY-NOTICES.md"
+    assert_path_exists libexec/"share/licenses/container/SOURCE-AVAILABILITY.md"
   end
 end
