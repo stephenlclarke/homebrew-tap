@@ -1,8 +1,8 @@
 class Devcontainer < Formula
   desc "VS Code Dev Containers compatibility for Apple container"
   homepage "https://github.com/stephenlclarke/devcontainer"
-  url "https://github.com/stephenlclarke/devcontainer/releases/download/1.0.1/devcontainer-release-arm64.tar.gz"
-  sha256 "0cd5210388572fd7c30eeb8f6196f72264c6881b445c13cda73a8c228633d906"
+  url "https://github.com/stephenlclarke/devcontainer/releases/download/1.1.0/devcontainer-release-arm64.tar.gz"
+  sha256 "cec813a6edecbd9190004c517035d5987f59dde6c40e80a8ef8fa9da7c3e389c"
   license "Apache-2.0"
 
   depends_on arch: :arm64
@@ -14,7 +14,9 @@ class Devcontainer < Formula
     bin.install "bin/devcontainer"
     bin.install "bin/devcontainer-engine"
     bin.install "bin/devcontainer-compose"
+    bin.install "bin/devcontainer-docker"
     libexec.install "libexec/container"
+    libexec.install "libexec/devcontainer"
     pkgshare.install "share/devcontainer"
   end
 
@@ -53,9 +55,76 @@ class Devcontainer < Formula
   end
 
   test do
-    assert_match "1.0.1", shell_output("#{bin}/devcontainer version --short")
+    require "json"
+    require "socket"
+
+    assert_match "1.1.0", shell_output("#{bin}/devcontainer version --short")
     assert_match "DOCKER_HOST", shell_output("#{bin}/devcontainer context")
+    assert_match "devcontainer-docker version 1.1.0",
+                 shell_output("#{bin}/devcontainer-docker --version")
     assert_path_exists libexec/"container/plugins/devcontainer/config.toml"
     assert_predicate libexec/"container/plugins/devcontainer/bin/devcontainer", :executable?
+
+    runtime = JSON.parse((libexec/"devcontainer/reference/runtime-lock.json").read)
+    node = libexec/"devcontainer/reference/node"
+    cli = libexec/"devcontainer/reference/cli/devcontainer.js"
+    assert_predicate node, :executable?
+    assert_path_exists libexec/"devcontainer/reference/NODE-LICENSE.txt"
+    assert_path_exists libexec/"devcontainer/reference/cli/LICENSE.txt"
+    assert_path_exists libexec/"devcontainer/reference/cli/ThirdPartyNotices.txt"
+    assert_match "v#{runtime.fetch("node").fetch("version")}", shell_output("#{node} --version")
+    assert_match runtime.fetch("cli").fetch("version"), shell_output("#{node} #{cli} --version")
+
+    workspace = testpath/"workspace"
+    configuration_directory = workspace/".devcontainer"
+    configuration_directory.mkpath
+    configuration = {
+      "image"        => "fixture.invalid/no-pull:1",
+      "containerEnv" => { "BUNDLE_PROBE" => "packaged" },
+    }
+    (configuration_directory/"devcontainer.json").write(JSON.generate(configuration))
+    socket_path = testpath/"engine.sock"
+    server = UNIXServer.new(socket_path.to_s)
+    File.chmod(0600, socket_path)
+    requests = []
+    server_thread = Thread.new do
+      loop do
+        client = server.accept
+        begin
+          request = client.gets
+          break if request.nil?
+
+          path = request.split[1]
+          requests << path
+          while (header = client.gets) && header != "\r\n"
+          end
+          accepted = path.match?(%r{(?:/v[0-9.]+)?/containers/json\?.*})
+          status = accepted ? "200 OK" : "500 Unexpected route"
+          response = "HTTP/1.1 #{status}\r\nContent-Type: application/json\r\n" \
+                     "Content-Length: 2\r\nConnection: close\r\n\r\n[]"
+          client.write(response)
+        ensure
+          client.close
+        end
+      end
+    end
+    begin
+      output = with_env(
+        "DEVCONTAINER_SOCKET" => socket_path.to_s,
+        "DEVCONTAINER_CONFIG" => (testpath/"devcontainer.toml").to_s,
+        "DEVCONTAINER_STATE"  => (testpath/"state.sqlite").to_s,
+      ) do
+        shell_output("#{bin}/devcontainer read-configuration --workspace-folder #{workspace} --log-level debug")
+      end
+    ensure
+      server_thread.kill
+      server_thread.join
+      server.close
+    end
+    result = JSON.parse(output)
+    assert_equal "fixture.invalid/no-pull:1", result.fetch("configuration").fetch("image")
+    assert_equal({ "BUNDLE_PROBE" => "packaged" }, result.fetch("configuration").fetch("containerEnv"))
+    assert requests.any?
+    assert requests.all? { |path| path.match?(%r{(?:/v[0-9.]+)?/containers/json\?.*}) }
   end
 end
