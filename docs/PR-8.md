@@ -19,3 +19,7 @@ macOS 14 or later, universal app, normal quarantine and save-preserving uninstal
 ## Linked issue
 
 Closes [Issue #8](https://github.com/stephenlclarke/homebrew-tap/issues/8).
+
+## Pull request
+
+[PR #9](https://github.com/stephenlclarke/homebrew-tap/pull/9).
