@@ -64,6 +64,31 @@ Remove the tap after uninstalling its formulae with:
 brew untap stephenlclarke/tap
 ```
 
+## Elite for macOS
+
+Elite requires Homebrew and macOS Sonoma 14 or later on an Apple silicon or Intel Mac. The cask installs the signed, notarized universal app from the immutable, checksum-verified [1.3.1 release](https://github.com/stephenlclarke/elite/blob/1ef005e0c73971a360a0e3bb52792a9286a761d3/releases/macos/Elite-1.3.1-universal.json).
+
+```sh
+brew tap stephenlclarke/tap
+brew trust --tap stephenlclarke/tap
+brew install --cask stephenlclarke/tap/elite
+```
+
+Open Elite from Applications to play. To upgrade after a newer reviewed cask is published:
+
+```sh
+brew update
+brew upgrade --cask stephenlclarke/tap/elite
+```
+
+To remove the app:
+
+```sh
+brew uninstall --cask stephenlclarke/tap/elite
+```
+
+Installation, upgrades and normal uninstallation preserve commanders and mission packs in `~/.xyzzy/elite`. The cask has no save-removal hooks and retains Homebrew's normal quarantine handling.
+
 ## Other Formulae
 
 ```sh

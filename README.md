@@ -38,8 +38,9 @@ Complete install, upgrade, migration, and removal instructions live in
 
 `maze`, `mazewar`, `bzflag`, `asteroids`, and `defender` build a native macOS app bundle from their current `main` source and install a launcher command.
 
-| Formula | Install command |
+| Package | Install command |
 | --- | --- |
+| `elite` (cask) | `brew install --cask stephenlclarke/tap/elite` |
 | `maze` | `brew install --HEAD stephenlclarke/tap/maze` |
 | `mazewar` | `brew install --HEAD stephenlclarke/tap/mazewar` |
 | `pacman` | `brew install stephenlclarke/tap/pacman` |
@@ -47,6 +48,8 @@ Complete install, upgrade, migration, and removal instructions live in
 | `bzflag` | `brew install --HEAD stephenlclarke/tap/bzflag` |
 | `asteroids` | `brew install --HEAD stephenlclarke/tap/asteroids` |
 | `defender` | `brew install --HEAD stephenlclarke/tap/defender` |
+
+Elite installs the signed, notarized universal macOS app for Apple silicon and Intel Macs running macOS Sonoma 14 or later. The cask pins the checksum-verified [1.3.1 release manifest](https://github.com/stephenlclarke/elite/blob/1ef005e0c73971a360a0e3bb52792a9286a761d3/releases/macos/Elite-1.3.1-universal.json). Open Elite from Applications to play; [install, upgrade and removal commands](INSTALL.md#elite-for-macos) preserve saves in `~/.xyzzy/elite`.
 
 Battlezone installs the native wgpu window build from a checksum-verified source archive. Run `battlezone --help` to check the installation, then `battlezone` to play. Use `brew upgrade stephenlclarke/tap/battlezone` after `brew update` to replace an older Kitty build. Its optional `--HEAD` installation follows `develop` until the port is integrated into `main`.
 

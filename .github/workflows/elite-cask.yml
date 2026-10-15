@@ -1,0 +1,74 @@
+---
+# yamllint disable rule:truthy rule:line-length
+
+name: Elite Cask
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "Casks/**"
+      - ".github/workflows/elite-cask.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "Casks/**"
+      - ".github/workflows/elite-cask.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: elite-cask-${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  cask:
+    name: Elite Cask
+    runs-on: macos-26
+    timeout-minutes: 15
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: "1"
+      HOMEBREW_NO_INSTALL_CLEANUP: "1"
+    steps:
+      - name: Checkout tap
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Validate cask syntax and tap local checkout
+        run: |
+          set -euo pipefail
+          ruby -c Casks/elite.rb
+          brew tap stephenlclarke/tap "${GITHUB_WORKSPACE}"
+          brew trust --tap stephenlclarke/tap
+
+      - name: Style and audit Elite cask
+        run: |
+          set -euo pipefail
+          # Cask/Url mistakes the raw tracked signed binary ZIP under releases/
+          # for a GitHub source zipball. Exempt this cop only for this cask.
+          brew style --cask --except-cops=Cask/Url stephenlclarke/tap/elite
+          brew audit --cask --strict --online stephenlclarke/tap/elite
+
+      - name: Install and verify without launching
+        run: |
+          set -euo pipefail
+          app_dir="${RUNNER_TEMP}/elite-cask-apps"
+          mkdir -p "$app_dir"
+          brew install --cask --require-sha --no-ask --appdir="$app_dir" stephenlclarke/tap/elite
+          test -d "$app_dir/Elite.app"
+          codesign --verify --deep --strict "$app_dir/Elite.app"
+          xcrun stapler validate "$app_dir/Elite.app"
+          spctl --assess --type execute "$app_dir/Elite.app"
+          xattr -p com.apple.quarantine "$app_dir/Elite.app"
+
+      - name: Uninstall isolated app
+        if: always()
+        run: |
+          set -euo pipefail
+          if [[ -d "$(brew --caskroom)/elite/.metadata" ]]; then
+            brew uninstall --cask stephenlclarke/tap/elite
+          fi
+          test ! -e "${RUNNER_TEMP}/elite-cask-apps/Elite.app"
