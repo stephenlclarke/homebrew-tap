@@ -47,9 +47,7 @@ jobs:
       - name: Style and audit Elite cask
         run: |
           set -euo pipefail
-          # Cask/Url mistakes the raw tracked signed binary ZIP under releases/
-          # for a GitHub source zipball. Exempt this cop only for this cask.
-          brew style --cask --except-cops=Cask/Url stephenlclarke/tap/elite
+          brew style --cask stephenlclarke/tap/elite
           brew audit --cask --strict --online stephenlclarke/tap/elite
 
       - name: Install and verify without launching
