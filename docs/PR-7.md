@@ -14,7 +14,7 @@
 
 ## Motivation and Context
 
-See [ISSUE-elite-cask.md](ISSUE-elite-cask.md). A binary cask installs the reviewed app directly. The original Homebrew workflow remains byte-for-byte unchanged, so a later cask-only update does not trigger unrelated formula installations. Source submodules remain unchanged.
+See [ISSUE-7.md](ISSUE-7.md). A binary cask installs the reviewed app directly. The original Homebrew workflow remains byte-for-byte unchanged, so a later cask-only update does not trigger unrelated formula installations. Source submodules remain unchanged.
 
 ## Testing
 
@@ -37,4 +37,4 @@ Homebrew 7's `Cask/Url` rule treats a ZIP under a raw GitHub `releases/` path as
 
 ## Remaining risks
 
-Native execution on Intel hardware and macOS Sonoma was not performed; both architectures and their 14.0 minimum load commands were inspected. The GitHub job is prepared and locally linted, but has not run remotely. The separate cask workflow passes YAML lint, actionlint, shell syntax and ShellCheck; scoped Markdown lint is clean. No commit is pushed and no GitHub issue or pull request is created during preparation.
+Native execution on Intel hardware and macOS Sonoma was not performed; both architectures and their 14.0 minimum load commands were inspected. The GitHub job is prepared and locally linted, but has not run remotely. The separate cask workflow passes YAML lint, actionlint, shell syntax and ShellCheck; scoped Markdown lint is clean. The change is tracked in [PR #7](https://github.com/stephenlclarke/homebrew-tap/pull/7). Hosted checks and the existing required review remain publication gates.
