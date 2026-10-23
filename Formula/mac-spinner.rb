@@ -18,7 +18,7 @@ class MacSpinner < Formula
   depends_on macos: :ventura
 
   def install
-    bin.install Dir["mac-spinner-*/bin/mac-spinner"].first
+    bin.install Dir["**/bin/mac-spinner"].first
   end
 
   test do
