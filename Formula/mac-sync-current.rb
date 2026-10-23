@@ -11,6 +11,7 @@ class MacSyncCurrent < Formula
   depends_on "git"
   depends_on "gnu-tar"
   depends_on macos: :ventura
+  depends_on "stephenlclarke/tap/mac-spinner"
   depends_on "rsync"
 
   def install
@@ -27,7 +28,6 @@ class MacSyncCurrent < Formula
     end
 
     bin.install payload/"mac-sync"
-    bin.install payload/"mac-spinner"
     prefix.install package_root/"MacSync.app"
   end
 
@@ -40,7 +40,7 @@ class MacSyncCurrent < Formula
         mac-sync ui
 
       Homebrew also installs Mac Sync's required command-line dependencies:
-      age, GNU tar, Git, and rsync. Apple-provided macOS tools cover Keychain
+      age, GNU tar, Git, mac-spinner, and rsync. Apple-provided macOS tools cover Keychain
       access and the remaining POSIX utilities.
 
       On first launch, Mac Sync guides you to choose or clone a mac-sync-data
@@ -72,7 +72,8 @@ class MacSyncCurrent < Formula
 
   test do
     assert_match "USAGE:", shell_output("#{bin}/mac-sync --help")
-    assert_match "brew smoke", shell_output("#{bin}/mac-spinner --message 'brew smoke' --pending")
+    spinner = formula_opt_bin("mac-spinner")/"mac-spinner"
+    assert_match "brew smoke", shell_output("#{spinner} --message 'brew smoke' --pending")
     assert_predicate formula_opt_bin("age")/"age", :executable?
     assert_predicate formula_opt_bin("age")/"age-keygen", :executable?
     assert_predicate formula_opt_bin("git")/"git", :executable?
