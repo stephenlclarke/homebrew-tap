@@ -4,7 +4,6 @@
 class MacSpinner < Formula
   desc "Small command-line spinner for macOS terminal workflows"
   homepage "https://github.com/stephenlclarke/mac-spinner"
-  version "0.1.0"
   license "MIT"
 
   if Hardware::CPU.arm?
