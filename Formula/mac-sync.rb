@@ -1,8 +1,9 @@
 class MacSync < Formula
   desc "Curated Mac dotfile, package, secret, and repository snapshot sync tool"
   homepage "https://github.com/stephenlclarke/mac-sync"
-  url "https://github.com/stephenlclarke/mac-sync/releases/download/1.0.4/mac-sync-release-arm64.tar.gz"
-  sha256 "2153d6bccbe56598f616979ce92dfea0b616e1b3b6505e0b4b755aeefaaab67e"
+  url "https://github.com/stephenlclarke/mac-sync/releases/download/1.1.0/mac-sync-release-arm64.tar.gz"
+  version "1.1.0"
+  sha256 "b44c0bff35af64541cee57313d581182140a69417e68b4e4f503e8819a1f041c"
   license "AGPL-3.0-or-later"
 
   depends_on "age"
@@ -32,15 +33,15 @@ class MacSync < Formula
 
   def caveats
     <<~EOS
-      This formula installs the stable 1.0.4 prebuilt package asset:
+      This formula installs the stable 1.1.0 prebuilt package asset:
         mac-sync-release-arm64.tar.gz
 
       Launch the installed Mac Sync app with:
         mac-sync ui
 
       Homebrew also installs Mac Sync's required command-line dependencies:
-      age, GNU tar, Git, mac-spinner, and rsync. Apple-provided macOS tools cover Keychain
-      access and the remaining POSIX utilities.
+      age, GNU tar, Git, mac-spinner, and rsync. Apple-provided macOS tools
+      cover Keychain access and the remaining POSIX utilities.
 
       On first launch, Mac Sync guides you to choose or clone a mac-sync-data
       checkout. It saves only that path for the CLI/service; Git credentials
@@ -61,6 +62,8 @@ class MacSync < Formula
 
   service do
     run [opt_bin/"mac-sync", "run"]
+    process_type :background
+    nice 10
     run_type :interval
     interval 3600
     environment_variables PATH: std_service_path_env
