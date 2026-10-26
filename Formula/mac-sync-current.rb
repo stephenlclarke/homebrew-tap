@@ -1,9 +1,9 @@
 class MacSyncCurrent < Formula
   desc "Curated Mac dotfile, package, secret, and repository snapshot sync tool"
   homepage "https://github.com/stephenlclarke/mac-sync"
-  url "https://github.com/stephenlclarke/mac-sync/releases/download/current/mac-sync-current-4f0d503feba4-arm64.tar.gz"
-  version "current.62.4f0d503feba4"
-  sha256 "7f172f35ca52b55f65baffc8d2670d44deae7a9c03e72b0c1f20a5445ab627a8"
+  url "https://github.com/stephenlclarke/mac-sync/releases/download/current/mac-sync-current-23f9390bf886-arm64.tar.gz"
+  version "current.63.23f9390bf886"
+  sha256 "b32505c7e53b67943d4e7de5ad8ec1c038f54a9a71b1924a789605e3c7b325bd"
   license "AGPL-3.0-or-later"
 
   depends_on "age"
@@ -34,7 +34,7 @@ class MacSyncCurrent < Formula
   def caveats
     <<~EOS
       This formula installs the current prebuilt package asset:
-        mac-sync-current-4f0d503feba4-arm64.tar.gz
+        mac-sync-current-23f9390bf886-arm64.tar.gz
 
       Launch the installed Mac Sync app with:
         mac-sync ui
