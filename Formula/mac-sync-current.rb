@@ -1,9 +1,9 @@
 class MacSyncCurrent < Formula
   desc "Curated Mac dotfile, package, secret, and repository snapshot sync tool"
   homepage "https://github.com/stephenlclarke/mac-sync"
-  url "https://github.com/stephenlclarke/mac-sync/releases/download/current/mac-sync-current-1418776a3ef3-arm64.tar.gz"
-  version "current.47.1418776a3ef3"
-  sha256 "fddd5357228cfcef7c2e30299c7957b92577fce23e5d0cea657023eb3823eeea"
+  url "https://github.com/stephenlclarke/mac-sync/releases/download/current/mac-sync-current-30a4bf72f5ee-arm64.tar.gz"
+  version "current.58.30a4bf72f5ee"
+  sha256 "649ccf92a82fab314a1ad7dd02e400f57fe26ed74875c52508846ccab904365c"
   license "AGPL-3.0-or-later"
 
   depends_on "age"
@@ -34,14 +34,14 @@ class MacSyncCurrent < Formula
   def caveats
     <<~EOS
       This formula installs the current prebuilt package asset:
-        mac-sync-current-1418776a3ef3-arm64.tar.gz
+        mac-sync-current-30a4bf72f5ee-arm64.tar.gz
 
       Launch the installed Mac Sync app with:
         mac-sync ui
 
       Homebrew also installs Mac Sync's required command-line dependencies:
-      age, GNU tar, Git, mac-spinner, and rsync. Apple-provided macOS tools cover Keychain
-      access and the remaining POSIX utilities.
+      age, GNU tar, Git, mac-spinner, and rsync. Apple-provided macOS tools
+      cover Keychain access and the remaining POSIX utilities.
 
       On first launch, Mac Sync guides you to choose or clone a mac-sync-data
       checkout. It saves only that path for the CLI/service; Git credentials
@@ -62,6 +62,8 @@ class MacSyncCurrent < Formula
 
   service do
     run [opt_bin/"mac-sync", "run"]
+    process_type :background
+    nice 10
     run_type :interval
     interval 3600
     environment_variables PATH: std_service_path_env
