@@ -49,7 +49,7 @@ Complete install, upgrade, migration, and removal instructions live in
 | `asteroids` | `brew install --HEAD stephenlclarke/tap/asteroids` |
 | `defender` | `brew install --HEAD stephenlclarke/tap/defender` |
 
-Elite installs the signed, notarized universal macOS app for Apple silicon and Intel Macs running macOS Sonoma 14 or later. The cask pins the checksum-verified [1.4.0 release manifest](https://github.com/stephenlclarke/elite/releases/download/v1.4.0/Elite-1.4.0-universal.json). Open Elite from Applications to play; [install, upgrade and removal commands](INSTALL.md#elite-for-macos) preserve saves in `~/.xyzzy/elite`.
+Elite installs the signed, notarized universal macOS app for Apple silicon and Intel Macs running macOS Sonoma 14 or later. The cask pins the checksum-verified [1.5.0 release manifest](https://github.com/stephenlclarke/elite/releases/download/v1.5.0/Elite-1.5.0-universal.json). Open Elite from Applications to play; [install, upgrade and removal commands](INSTALL.md#elite-for-macos) preserve saves in `~/.xyzzy/elite`.
 
 Battlezone installs the native wgpu window build from a checksum-verified source archive. Run `battlezone --help` to check the installation, then `battlezone` to play. Use `brew upgrade stephenlclarke/tap/battlezone` after `brew update` to replace an older Kitty build. Its optional `--HEAD` installation follows `develop` until the port is integrated into `main`.
 
