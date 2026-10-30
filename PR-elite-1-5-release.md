@@ -1,4 +1,4 @@
-# chore(elite): publish the verified 1.5.0 cask
+# chore(elite): publish the verified 1.5.1 cask
 
 ## Change
 
@@ -6,7 +6,7 @@ Update the cask version, public ZIP checksum and exact released source provenanc
 
 ## Validation
 
-Ruby syntax passes. The existing distribution suite passes all 44 tests and cask consistency passes. All five public release assets match their published digests; the extracted universal app passes Developer ID signing, hardened runtime, timestamp, notarization staple, Gatekeeper, minimum macOS 14, source/resource binding and actual diagnostics checks. The hosted cask style, audit, isolated installation/security and uninstall checks remain required for this PR head, together with independent review.
+Ruby syntax passes. The existing distribution suite passes all 44 tests and cask consistency passes. All five public release assets match their published digests; the extracted universal app passes Developer ID signing, hardened runtime, timestamp, notarization staple, Gatekeeper, minimum macOS 14, source/resource binding and actual diagnostics checks. The earlier 1.5.0 packet passed hosted cask style, audit, isolated installation/security and uninstall checks. Those checks and independent review must pass again for this updated 1.5.1 PR head.
 
 ## Compatibility
 
