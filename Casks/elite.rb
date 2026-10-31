@@ -1,8 +1,8 @@
 cask "elite" do
-  version "1.4.0"
-  sha256 "a9e8a165eac6a8c483ec71b73992ad838c13b606232d45aee4fe236e6655ed7a"
+  version "1.5.1"
+  sha256 "8398f6b03e44796ecc88ba3ad0b28a9d72fffd5f9d47a96d43942de0d51b941b"
 
-  # Artifact commit: bba862c558530ea2d40d634f84fbd490d9cc3401
+  # Source commit: e691630ccc3065748d4c02e90eed6a333da0d8b1
   url "https://github.com/stephenlclarke/elite/releases/download/v#{version}/Elite-#{version}-universal.zip"
   name "Elite"
   desc "Space trading and combat game inspired by BBC Micro Elite"

@@ -66,7 +66,7 @@ brew untap stephenlclarke/tap
 
 ## Elite for macOS
 
-Elite requires Homebrew and macOS Sonoma 14 or later on an Apple silicon or Intel Mac. The cask installs the signed, notarized universal app from the versioned, checksum-verified [1.4.0 release](https://github.com/stephenlclarke/elite/releases/download/v1.4.0/Elite-1.4.0-universal.json).
+Elite requires Homebrew and macOS Sonoma 14 or later on an Apple silicon or Intel Mac. The cask installs the signed, notarized universal app from the versioned, checksum-verified [1.5.1 release](https://github.com/stephenlclarke/elite/releases/download/v1.5.1/Elite-1.5.1-universal.json).
 
 ```sh
 brew tap stephenlclarke/tap
