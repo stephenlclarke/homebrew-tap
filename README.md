@@ -70,6 +70,7 @@ The language-suffixed binaries can coexist:
 
 | Formula | Install command |
 | --- | --- |
+| `aws-auto-approve` | `brew install --HEAD stephenlclarke/tap/aws-auto-approve` |
 | `sqlterm` | `brew install --HEAD stephenlclarke/tap/sqlterm` |
 
 ## Source Maintenance
@@ -276,3 +277,7 @@ GitHub Actions must be pinned to complete commit SHAs. Tap CI must not start a l
 
 Do not add `devcontainer` as a tap submodule. The formula is generated directly from immutable release assets and a source-owned template. This avoids stale source snapshots and keeps the tap's live content limited to installation metadata.
 <!-- devcontainer-docs:end -->
+
+## AWS Auto Approve
+
+Use `brew install --HEAD stephenlclarke/tap/aws-auto-approve` to build the native macOS WebKit helper, AWS CLI login wrapper and zsh completions. Granted is not required. See the [installation guide](https://github.com/stephenlclarke/aws-auto-approve/blob/main/INSTALL.md) for AWS profiles and direnv.
