@@ -51,9 +51,9 @@ Complete install, upgrade, migration, and removal instructions live in
 
 Elite installs the signed, notarized universal macOS app for Apple silicon and Intel Macs running macOS Sonoma 14 or later. The cask pins the checksum-verified [1.5.1 release manifest](https://github.com/stephenlclarke/elite/releases/download/v1.5.1/Elite-1.5.1-universal.json). Open Elite from Applications to play; [install, upgrade and removal commands](INSTALL.md#elite-for-macos) preserve saves in `~/.xyzzy/elite`.
 
-Battlezone installs the native wgpu window build from a checksum-verified source archive. Run `battlezone --help` to check the installation, then `battlezone` to play. Use `brew upgrade stephenlclarke/tap/battlezone` after `brew update` to replace an older Kitty build. Its optional `--HEAD` installation follows `develop` until the port is integrated into `main`.
+Battlezone installs the native wgpu window build from a checksum-verified source archive. Run `battlezone --help` to check the installation, then `battlezone` to play. Use `brew upgrade stephenlclarke/tap/battlezone` after `brew update` to install formula updates. Its optional `--HEAD` installation follows `develop` until the port is integrated into `main`.
 
-Pacman installs the native wgpu window build from a checksum-verified source archive pinned to the published `wgpu` commit. Run `pacman --help` to check the installation, then `pacman` to play. Use `brew upgrade stephenlclarke/tap/pacman` after `brew update` to replace an older Kitty build. The optional `--HEAD` installation follows the `wgpu` branch until the port is integrated into `main`.
+Download native macOS ARM64 and Windows x86-64 binaries from [Pacman Releases](https://github.com/stephenlclarke/pacman/releases); see its [download guide](https://github.com/stephenlclarke/pacman/blob/feat/wgpu-validation/README.md#download-a-binary-from-github) for checksums and launch steps. The Homebrew formula installs the native wgpu window build from a checksum-verified source archive pinned to the published `wgpu` commit. Run `pacman --help` to check the installation, then `pacman` to play. Use `brew upgrade stephenlclarke/tap/pacman` after `brew update` to install formula updates. The optional `--HEAD` installation follows the `wgpu` branch until the port is integrated into `main`.
 
 ## FIX Decoders
 
