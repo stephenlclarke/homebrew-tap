@@ -57,7 +57,7 @@ create_signed_update() {
         --rawfile formula "$WORK_DIR/aws-auto-approve.rb" '{
             query: "mutation($input:CreateCommitOnBranchInput!){createCommitOnBranch(input:$input){commit{oid}}}",
             variables: {input: {
-                branch: {repositoryNameWithOwner: $repository, refName: $branch},
+                branch: {repositoryNameWithOwner: $repository, branchName: $branch},
                 expectedHeadOid: $base,
                 message: {headline: $message},
                 fileChanges: {additions: [{path: "Formula/aws-auto-approve.rb", contents: ($formula | @base64)}]}

@@ -90,7 +90,7 @@ jq -e '
 jq -e '
     .variables.input |
     .branch.repositoryNameWithOwner == "stephenlclarke/homebrew-tap" and
-    .branch.refName == "automation/aws-auto-approve-v0.1.0" and
+    .branch.branchName == "automation/aws-auto-approve-v0.1.0" and
     .expectedHeadOid == "1111111111111111111111111111111111111111" and
     .message.headline == "chore: update aws-auto-approve to v0.1.0" and
     (.fileChanges.additions | length) == 1 and
