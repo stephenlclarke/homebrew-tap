@@ -199,6 +199,22 @@ jobs:
             fi
           done <<< "$FORMULA_PATHS"
 
+      - name: Prepare AWS CLI dependency on Intel runners
+        if: runner.environment == 'github-hosted' && runner.arch == 'X64'
+        env:
+          FORMULA_PATHS: ${{ needs.select.outputs.paths }}
+        run: |
+          set -euo pipefail
+          if ! grep -Fxq 'Formula/aws-auto-approve.rb' <<< "$FORMULA_PATHS"; then exit 0; fi
+          prefix="$(brew --prefix)"
+          for command in aws aws_completer; do
+            command_path="$prefix/bin/$command"
+            # Keep other installations; unlink only the runner image's vendor CLI.
+            if [[ -L "$command_path" && "$(readlink "$command_path")" == "/usr/local/aws-cli/$command" ]]; then
+              rm "$command_path"
+            fi
+          done
+
       - name: Install and test selected formulae
         env:
           FORMULA_PATHS: ${{ needs.select.outputs.paths }}
