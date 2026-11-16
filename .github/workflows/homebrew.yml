@@ -48,37 +48,17 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  formula:
-    name: Formula Syntax
-    runs-on: macos-26
+  select:
+    name: Select Homebrew checks
+    runs-on: ubuntu-latest
+    outputs:
+      paths: ${{ steps.formulae.outputs.paths }}
+      runner: ${{ steps.formulae.outputs.runner }}
     steps:
       - name: Checkout tap
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-
-      - name: Check synchronized formulae
-        run: scripts/sync-formulae.sh --check
-
-      - name: Check AWS release update boundaries
-        run: |
-          bash -n scripts/update-aws-auto-approve.sh
-          bash scripts/test-aws-release-update.sh
-
-      - name: Validate Ruby syntax
-        run: |
-          for formula in Formula/*.rb; do
-            ruby -c "${formula}"
-          done
-
-      - name: Reject stale compose install lanes
-        run: |
-          set -euo pipefail
-          if grep -R -n -E 'homebrew-develop|develop-debug|container-compose-plugin-develop|container-compose-snapshot|snapshot-bootstrap|snapshot/.+debug|sources/container-compose.*:.*develop' \
-            README.md INSTALL.md Formula/*.rb; then
-            printf 'stale compose develop or snapshot install lane reference found\n' >&2
-            exit 1
-          fi
 
       - name: Select formulae for Homebrew smoke
         id: formulae
@@ -127,6 +107,56 @@ jobs:
             printf 'EOF\n'
           } >> "$GITHUB_OUTPUT"
 
+          # AWS releases include an Intel build; other formulae may require Apple Silicon.
+          if grep -q -v '^Formula/aws-auto-approve\.rb$' "${RUNNER_TEMP}/formulae.txt"; then
+            runner=macos-26
+          else
+            runner=macos-26-intel
+          fi
+          printf 'runner=%s\n' "$runner" >> "$GITHUB_OUTPUT"
+
+  formula:
+    name: Formula Syntax
+    needs: select
+    if: always() && !cancelled()
+    runs-on: ${{ needs.select.outputs.runner || 'macos-26-intel' }}
+    steps:
+      - name: Require successful formula selection
+        env:
+          SELECT_RESULT: ${{ needs.select.result }}
+          SELECTED_RUNNER: ${{ needs.select.outputs.runner }}
+        run: |
+          test "$SELECT_RESULT" = success
+          case "$SELECTED_RUNNER" in macos-26|macos-26-intel) ;; *) exit 1 ;; esac
+
+      - name: Checkout tap
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Check synchronized formulae
+        run: scripts/sync-formulae.sh --check
+
+      - name: Check AWS release update boundaries
+        run: |
+          bash -n scripts/update-aws-auto-approve.sh
+          bash scripts/test-aws-release-update.sh
+
+      - name: Validate Ruby syntax
+        run: |
+          for formula in Formula/*.rb; do
+            ruby -c "${formula}"
+          done
+
+      - name: Reject stale compose install lanes
+        run: |
+          set -euo pipefail
+          if grep -R -n -E 'homebrew-develop|develop-debug|container-compose-plugin-develop|container-compose-snapshot|snapshot-bootstrap|snapshot/.+debug|sources/container-compose.*:.*develop' \
+            README.md INSTALL.md Formula/*.rb; then
+            printf 'stale compose develop or snapshot install lane reference found\n' >&2
+            exit 1
+          fi
+
       - name: Tap local formulae
         run: |
           set -euo pipefail
@@ -135,7 +165,7 @@ jobs:
 
       - name: Audit selected formulae
         env:
-          FORMULA_PATHS: ${{ steps.formulae.outputs.paths }}
+          FORMULA_PATHS: ${{ needs.select.outputs.paths }}
         run: |
           set -euo pipefail
           while IFS= read -r formula; do
@@ -146,7 +176,7 @@ jobs:
 
       - name: Fetch selected formula archives
         env:
-          FORMULA_PATHS: ${{ steps.formulae.outputs.paths }}
+          FORMULA_PATHS: ${{ needs.select.outputs.paths }}
         run: |
           set -euo pipefail
 
@@ -171,7 +201,7 @@ jobs:
 
       - name: Install and test selected formulae
         env:
-          FORMULA_PATHS: ${{ steps.formulae.outputs.paths }}
+          FORMULA_PATHS: ${{ needs.select.outputs.paths }}
         run: |
           set -euo pipefail
 
@@ -197,7 +227,7 @@ jobs:
 
       - name: Inspect selected formulae
         env:
-          FORMULA_PATHS: ${{ steps.formulae.outputs.paths }}
+          FORMULA_PATHS: ${{ needs.select.outputs.paths }}
         run: |
           set -euo pipefail
           while IFS= read -r formula; do
