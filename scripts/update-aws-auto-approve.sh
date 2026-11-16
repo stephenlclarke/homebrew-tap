@@ -10,6 +10,8 @@
 #
 # ENVIRONMENT:
 #   GH_TOKEN    Repository-scoped GitHub Actions token for this tap.
+#   AWS_AUTO_APPROVE_REVIEW_TOKEN
+#               Fine-grained owner token: this tap only, pull requests write.
 # ENDUSAGE
 # ---------------------------------------------------------------------------
 
@@ -53,7 +55,9 @@ enable_merge() {
         done
     fi
     [[ "$head" =~ ^[0-9a-f]{40}$ ]] || error 'The release pull request has an invalid head commit.'
+    [[ -n "${AWS_AUTO_APPROVE_REVIEW_TOKEN:-}" ]] || error 'Set AWS_AUTO_APPROVE_REVIEW_TOKEN to enable the protected owner review.'
     gh workflow run homebrew.yml --repo stephenlclarke/homebrew-tap --ref "$branch" -f formula=aws-auto-approve || error 'Could not dispatch the required Homebrew check.'
+    GH_TOKEN="$AWS_AUTO_APPROVE_REVIEW_TOKEN" gh pr review "$number" --repo stephenlclarke/homebrew-tap --approve || error 'The narrowly scoped owner review did not succeed.'
     gh pr merge "$number" --repo stephenlclarke/homebrew-tap --auto --squash --match-head-commit "$head" || error 'Could not enable protected auto-merge.'
 }
 

@@ -75,7 +75,7 @@ The language-suffixed binaries can coexist:
 
 ## Source Maintenance
 
-AWS Auto Approve installs the versioned prebuilt release for Apple Silicon or Intel; it does not need Xcode. Its release updater checks hourly, verifies the formula checksum, and enables auto-merge only for a single-formula PR created by GitHub Actions. The required `Formula Syntax` check still applies. The Actions review exception supports this guarded workflow; other PRs retain owner review. Run the **AWS Auto Approve Release** workflow manually to check for a new release sooner.
+AWS Auto Approve installs the versioned prebuilt release for Apple Silicon or Intel; it does not need Xcode. Its release updater checks hourly, verifies the formula checksum, and enables auto-merge only for a single-formula PR created by GitHub Actions. The required `Formula Syntax` check still applies. A review-only owner token, limited to this tap, supplies the required owner review after the workflow checks the PR author and changed file. Other PRs retain normal review. Run the **AWS Auto Approve Release** workflow manually to check for a new release sooner.
 
 The tap tracks these source repositories on `main`:
 
