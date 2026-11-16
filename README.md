@@ -79,6 +79,8 @@ AWS Auto Approve installs the versioned prebuilt release for Apple Silicon or In
 
 AWS Auto Approve's Homebrew checks use Intel Mac runners, and its source repository also validates the Apple Silicon build. Checks that include other formulae use Apple Silicon runners.
 
+GitHub signs the formula update commits. The updater verifies every new commit signature before requesting the protected owner review.
+
 The tap tracks these source repositories on `main`:
 
 - `sources/container`

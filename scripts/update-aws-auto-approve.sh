@@ -4,7 +4,7 @@
 #   Usage: @SCRIPT_NAME@ [--help]
 #
 # DESCRIPTION:
-#   Open an update for the latest AWS Auto Approve release, verify its
+#   Open a GitHub-signed update for the latest AWS Auto Approve release, verify its
 #   formula checksum and enable merging after the required Homebrew check.
 #   Only this formula and branches created by this workflow are eligible.
 #
@@ -35,6 +35,39 @@ error() { printf '[x] %s\n' "$*" >&2; exit 1; }
 # Remove only this invocation's downloaded assets.
 cleanup() { if [[ -n "$WORK_DIR" ]]; then rm -rf "$WORK_DIR"; fi; }
 
+# Reject unsigned history before requesting a protected merge.
+verify_update_signatures() {
+    local head="$1" verified
+    verified="$(gh api "repos/stephenlclarke/homebrew-tap/compare/main...$head" --jq '
+        .total_commits > 0 and .total_commits <= 250 and
+        (.commits | length) == .total_commits and
+        all(.commits[]; .commit.verification.verified == true)
+    ')"
+    [[ "$verified" == true ]] || error 'Every update commit must have a verified signature.'
+}
+
+# Use GitHub signing without exporting a commit-signing private key to Actions.
+create_signed_update() {
+    local tap="$1" branch="$2" tag="$3" base head
+    base="$(gh api "repos/$tap/git/ref/heads/main" --jq .object.sha)"
+    [[ "$base" =~ ^[0-9a-f]{40}$ ]] || error 'The tap main commit is invalid.'
+    gh api --method POST "repos/$tap/git/refs" -f "ref=refs/heads/$branch" -f "sha=$base" >/dev/null
+    jq -n --arg repository "$tap" --arg branch "$branch" --arg base "$base" \
+        --arg message "chore: update aws-auto-approve to $tag" \
+        --rawfile formula "$WORK_DIR/aws-auto-approve.rb" '{
+            query: "mutation($input:CreateCommitOnBranchInput!){createCommitOnBranch(input:$input){commit{oid}}}",
+            variables: {input: {
+                branch: {repositoryNameWithOwner: $repository, refName: $branch},
+                expectedHeadOid: $base,
+                message: {headline: $message},
+                fileChanges: {additions: [{path: "Formula/aws-auto-approve.rb", contents: ($formula | @base64)}]}
+            }}
+        }' >"$WORK_DIR/commit-request.json"
+    head="$(gh api graphql --input "$WORK_DIR/commit-request.json" --jq .data.createCommitOnBranch.commit.oid)"
+    [[ "$head" =~ ^[0-9a-f]{40}$ ]] || error 'GitHub did not return the signed update commit.'
+    verify_update_signatures "$head"
+}
+
 # Enable merge only for this bot's single-file release update after required checks.
 enable_merge() {
     local branch="$1" number author files head state attempt
@@ -55,6 +88,7 @@ enable_merge() {
         done
     fi
     [[ "$head" =~ ^[0-9a-f]{40}$ ]] || error 'The release pull request has an invalid head commit.'
+    verify_update_signatures "$head"
     [[ -n "${AWS_AUTO_APPROVE_REVIEW_TOKEN:-}" ]] || error 'Set AWS_AUTO_APPROVE_REVIEW_TOKEN to enable the protected owner review.'
     gh workflow run homebrew.yml --repo stephenlclarke/homebrew-tap --ref "$branch" -f formula=aws-auto-approve || error 'Could not dispatch the required Homebrew check.'
     GH_TOKEN="$AWS_AUTO_APPROVE_REVIEW_TOKEN" gh pr review "$number" --repo stephenlclarke/homebrew-tap --approve || error 'The narrowly scoped owner review did not succeed.'
@@ -89,13 +123,7 @@ main() {
         enable_merge "$branch"
         return
     fi
-    git switch -c "$branch"
-    cp "$WORK_DIR/aws-auto-approve.rb" Formula/aws-auto-approve.rb
-    git config user.name 'github-actions[bot]'
-    git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-    git add Formula/aws-auto-approve.rb
-    git commit -m "chore: update aws-auto-approve to $tag"
-    git push --set-upstream origin "$branch"
+    create_signed_update "$tap" "$branch" "$tag"
     printf 'Install the prebuilt AWS Auto Approve %s packages. The formula and its SHA-256 values come from the published release.\n\nThe release checksum was verified before committing. Auto-merge is restricted to this bot-created, single-formula update and waits for the required Formula Syntax check.\n' "$tag" >"$WORK_DIR/pr-body"
     gh pr create --repo "$tap" --base main --head "$branch" --title "chore: update aws-auto-approve to $tag" --body-file "$WORK_DIR/pr-body"
     # Explicit dispatch runs checks for this bot-created branch without a personal token.

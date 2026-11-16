@@ -109,6 +109,8 @@ brew install --HEAD stephenlclarke/tap/sqlterm
 
 The release updater uses the normal repository-scoped Actions token to create the bot PR, run Homebrew validation and enable auto-merge. The existing owner-review and required-check rules stay in place. The workflow accepts only the bot author, the expected release branch and a single changed `Formula/aws-auto-approve.rb` matching the checksum-verified release asset.
 
+The updater creates GitHub-signed commits and checks their verified signatures before requesting a review. It does not need a separate commit-signing key.
+
 For its owner-review step, create a fine-grained GitHub token limited to **stephenlclarke/homebrew-tap**, with only **Pull requests: Read and write** beyond the automatic metadata permission. Store it privately as this repository secret:
 
 ```sh
