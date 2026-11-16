@@ -11,6 +11,7 @@ TEST_AUTHOR='github-actions[bot]'
 TEST_FILES='Formula/aws-auto-approve.rb'
 TEST_HEAD='1111111111111111111111111111111111111111'
 TEST_DISPATCH=0
+TEST_REVIEW=0
 AWS_AUTO_APPROVE_REVIEW_TOKEN=fixture-review-token
 
 # Replace only the external GitHub boundary; record any requested mutation.
@@ -26,7 +27,7 @@ gh() {
         'pr diff') printf '%s\n' "$TEST_FILES" ;;
         'workflow run') printf 'dispatch\n' >>"$TEST_ROOT/calls"; return "$TEST_DISPATCH" ;;
         'pr merge') printf 'merge %s\n' "$*" >>"$TEST_ROOT/calls" ;;
-        'pr review') printf 'review\n' >>"$TEST_ROOT/calls" ;;
+        'pr review') printf 'review\n' >>"$TEST_ROOT/calls"; return "$TEST_REVIEW" ;;
         *) printf 'Unexpected GitHub operation\n' >&2; return 9 ;;
     esac
 }
@@ -57,4 +58,10 @@ check 1
 TEST_HEAD='1111111111111111111111111111111111111111'
 TEST_DISPATCH=1
 check 1
-printf 'AWS release auto-merge: 5 checks passed.\n'
+TEST_DISPATCH=0
+AWS_AUTO_APPROVE_REVIEW_TOKEN=''
+check 1
+AWS_AUTO_APPROVE_REVIEW_TOKEN=fixture-review-token
+TEST_REVIEW=1
+check 1
+printf 'AWS release auto-merge: 7 checks passed.\n'

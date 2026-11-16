@@ -67,7 +67,8 @@ main() {
     local tag checksum actual branch
     if [[ "${1:-}" == --help || "${1:-}" == -h ]]; then usage; return; fi
     if (($#)); then usage >&2; return 2; fi
-    tag="$(gh release view --repo "$repository" --json tagName --jq .tagName)"
+    tag="$(gh release list --repo "$repository" --exclude-drafts --exclude-pre-releases --limit 1 --json tagName --jq '.[0].tagName // empty')"
+    if [[ -z "$tag" ]]; then info 'No published AWS Auto Approve release yet.'; return; fi
     [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || error 'Latest release is not a stable semantic version.'
     WORK_DIR="$(mktemp -d)"
     trap cleanup EXIT
