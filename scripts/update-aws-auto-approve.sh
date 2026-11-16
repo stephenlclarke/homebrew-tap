@@ -77,7 +77,9 @@ main() {
     actual="$(sha256sum "$WORK_DIR/aws-auto-approve.rb" | awk '{print $1}')"
     [[ "$checksum" =~ ^[a-f0-9]{64}$ && "$checksum" == "$actual" ]] || error 'Released formula checksum does not match.'
     ruby -c "$WORK_DIR/aws-auto-approve.rb"
-    grep -Fq "version \"${tag#v}\"" "$WORK_DIR/aws-auto-approve.rb" || error 'Formula version does not match the release.'
+    for architecture in arm64 x86_64; do
+        grep -Fq "releases/download/$tag/aws-auto-approve-${tag#v}-macos-$architecture.tar.gz\"" "$WORK_DIR/aws-auto-approve.rb" || error 'Formula version does not match the release.'
+    done
     if cmp -s Formula/aws-auto-approve.rb "$WORK_DIR/aws-auto-approve.rb"; then info 'The tap already has this release.'; return; fi
     branch="automation/aws-auto-approve-$tag"
     if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
