@@ -104,3 +104,15 @@ brew install stephenlclarke/tap/fixdecoder-rs
 brew install --HEAD stephenlclarke/tap/fixdecoder-zig
 brew install --HEAD stephenlclarke/tap/sqlterm
 ```
+
+## AWS Auto Approve release automation
+
+The release updater uses the normal repository-scoped Actions token to create the bot PR, run Homebrew validation and enable auto-merge. The existing owner-review and required-check rules stay in place. The workflow accepts only the bot author, the expected release branch and a single changed `Formula/aws-auto-approve.rb` matching the checksum-verified release asset.
+
+For its owner-review step, create a fine-grained GitHub token limited to **stephenlclarke/homebrew-tap**, with only **Pull requests: Read and write** beyond the automatic metadata permission. Store it privately as this repository secret:
+
+```sh
+gh secret set AWS_AUTO_APPROVE_REVIEW_TOKEN --repo stephenlclarke/homebrew-tap
+```
+
+Paste the token into the terminal prompt, not a chat or a committed file. Set an expiry and rotate it before expiry. Without this secret, the updater stops before review/auto-merge. An expired token fails closed. The token cannot push source or modify repository administration; it is used only for the validated PR review.

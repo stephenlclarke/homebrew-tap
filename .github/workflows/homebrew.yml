@@ -12,6 +12,9 @@ on:
       - "INSTALL.md"
       - "README.md"
       - "scripts/sync-formulae.sh"
+      - "scripts/update-aws-auto-approve.sh"
+      - "scripts/test-aws-release-update.sh"
+      - ".github/workflows/aws-auto-approve-release.yml"
       - ".gitmodules"
       - "sources/**"
       - ".github/workflows/homebrew.yml"
@@ -23,10 +26,18 @@ on:
       - "INSTALL.md"
       - "README.md"
       - "scripts/sync-formulae.sh"
+      - "scripts/update-aws-auto-approve.sh"
+      - "scripts/test-aws-release-update.sh"
+      - ".github/workflows/aws-auto-approve-release.yml"
       - ".gitmodules"
       - "sources/**"
       - ".github/workflows/homebrew.yml"
   workflow_dispatch:
+    inputs:
+      formula:
+        description: Optional formula name to validate instead of all formulae
+        type: string
+        required: false
 
 permissions:
   contents: read
@@ -49,6 +60,11 @@ jobs:
       - name: Check synchronized formulae
         run: scripts/sync-formulae.sh --check
 
+      - name: Check AWS release update boundaries
+        run: |
+          bash -n scripts/update-aws-auto-approve.sh
+          bash scripts/test-aws-release-update.sh
+
       - name: Validate Ruby syntax
         run: |
           for formula in Formula/*.rb; do
@@ -68,6 +84,7 @@ jobs:
         id: formulae
         env:
           GH_TOKEN: ${{ github.token }}
+          REQUESTED_FORMULA: ${{ inputs.formula }}
         shell: bash
         run: |
           set -euo pipefail
@@ -89,7 +106,13 @@ jobs:
               fi
               ;;
             *)
-              find Formula -maxdepth 1 -type f -name '*.rb' | sort > "$changed_files"
+              if [[ -n "$REQUESTED_FORMULA" ]]; then
+                [[ "$REQUESTED_FORMULA" =~ ^[a-z0-9][a-z0-9-]*$ ]]
+                test -f "Formula/$REQUESTED_FORMULA.rb"
+                printf 'Formula/%s.rb\n' "$REQUESTED_FORMULA" > "$changed_files"
+              else
+                find Formula -maxdepth 1 -type f -name '*.rb' | sort > "$changed_files"
+              fi
               ;;
           esac
 
