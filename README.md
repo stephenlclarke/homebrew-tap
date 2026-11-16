@@ -70,10 +70,12 @@ The language-suffixed binaries can coexist:
 
 | Formula | Install command |
 | --- | --- |
-| `aws-auto-approve` | `brew install --HEAD stephenlclarke/tap/aws-auto-approve` |
+| `aws-auto-approve` | `brew install stephenlclarke/tap/aws-auto-approve` |
 | `sqlterm` | `brew install --HEAD stephenlclarke/tap/sqlterm` |
 
 ## Source Maintenance
+
+AWS Auto Approve installs the versioned prebuilt release for Apple Silicon or Intel; it does not need Xcode. Its release updater checks hourly, verifies the formula checksum, and enables auto-merge only for a single-formula PR created by GitHub Actions. The required `Formula Syntax` check still applies. The Actions review exception supports this guarded workflow; other PRs retain owner review. Run the **AWS Auto Approve Release** workflow manually to check for a new release sooner.
 
 The tap tracks these source repositories on `main`:
 
