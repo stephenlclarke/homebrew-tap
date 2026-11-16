@@ -7,7 +7,7 @@ TEST_ROOT="$(mktemp -d)"
 trap 'rm -rf "$TEST_ROOT"' EXIT
 # shellcheck source=scripts/update-aws-auto-approve.sh
 source "$ROOT/scripts/update-aws-auto-approve.sh"
-TEST_AUTHOR='github-actions[bot]'
+TEST_AUTHOR='app/github-actions'
 TEST_FILES='Formula/aws-auto-approve.rb'
 TEST_HEAD='1111111111111111111111111111111111111111'
 TEST_DISPATCH=0
@@ -49,7 +49,7 @@ check() {
 check 0
 TEST_AUTHOR=someone-else
 check 1
-TEST_AUTHOR='github-actions[bot]'
+TEST_AUTHOR='app/github-actions'
 TEST_FILES=$'Formula/aws-auto-approve.rb\nFormula/unrelated.rb'
 check 1
 TEST_FILES='Formula/aws-auto-approve.rb'

@@ -41,7 +41,7 @@ enable_merge() {
     number="$(gh pr list --repo stephenlclarke/homebrew-tap --state open --head "$branch" --json number --jq '.[0].number // empty')"
     [[ "$number" =~ ^[0-9]+$ ]] || error 'No open release pull request was found.'
     author="$(gh pr view "$number" --repo stephenlclarke/homebrew-tap --json author --jq .author.login)"
-    [[ "$author" == 'github-actions[bot]' ]] || error 'Refusing to auto-merge a pull request from another author.'
+    [[ "$author" == 'app/github-actions' ]] || error 'Refusing to auto-merge a pull request from another author.'
     files="$(gh pr diff "$number" --repo stephenlclarke/homebrew-tap --name-only)"
     [[ "$files" == Formula/aws-auto-approve.rb ]] || error 'Refusing to auto-merge changes outside the AWS Auto Approve formula.'
     head="$(gh pr view "$number" --repo stephenlclarke/homebrew-tap --json headRefOid --jq .headRefOid)"
