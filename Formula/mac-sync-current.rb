@@ -1,9 +1,9 @@
 class MacSyncCurrent < Formula
-  desc "Curated Mac dotfile, package, secret, and repository snapshot sync tool"
+  desc "Quiet file and settings sync between Macs"
   homepage "https://github.com/stephenlclarke/mac-sync"
-  url "https://github.com/stephenlclarke/mac-sync/releases/download/current/mac-sync-current-0e299e4e1cf2-arm64.tar.gz"
-  version "current.64.0e299e4e1cf2"
-  sha256 "5922f9ced067e3e51fcc75e585917b1763f9875364b4ae4a0eab6b3c3bf101e5"
+  url "https://github.com/stephenlclarke/mac-sync/releases/download/current/mac-sync-current-4e309283d239-arm64.tar.gz"
+  version "current.66.4e309283d239"
+  sha256 "514ed72b53cfb72746fa43b30e7aa9eba8d98dfeece3e536fe487a376592ec35"
   license "AGPL-3.0-or-later"
 
   depends_on "age"
@@ -34,7 +34,7 @@ class MacSyncCurrent < Formula
   def caveats
     <<~EOS
       This formula installs the current prebuilt package asset:
-        mac-sync-current-0e299e4e1cf2-arm64.tar.gz
+        mac-sync-current-4e309283d239-arm64.tar.gz
 
       Launch the installed Mac Sync app with:
         mac-sync ui
@@ -43,14 +43,18 @@ class MacSyncCurrent < Formula
       age, GNU tar, Git, mac-spinner, and rsync. Apple-provided macOS tools
       cover Keychain access and the remaining POSIX utilities.
 
-      On first launch, Mac Sync guides you to choose or clone a mac-sync-data
-      checkout. It saves only that path for the CLI/service; Git credentials
-      remain in SSH or Keychain. The default installed workflow does not use
-      the legacy dot-files checkout.
+      On first launch, choose your private Git repository or a folder already
+      synced by a cloud provider. Use the same destination on each Mac and
+      give each Mac a unique identifier. Git credentials remain in Git/Keychain.
+      A folder save is not proof that the cloud provider has uploaded it.
       The CLI remains available as:
         mac-sync --help
 
-      For a custom app-managed schedule, use Settings > Automatic sync.
+      Browse Other Macs to pull files, send files or queue exact-path replacements.
+      The receiving Mac applies safe selected changes on its next sync; conflicts
+      and deletions require review. Keep an independent verified backup.
+
+      For watch mode or a timed schedule, use Settings > Automatic sync.
       Stop the Homebrew service first so only one automatic sync job runs.
 
       The Homebrew service remains an hourly alternative:
