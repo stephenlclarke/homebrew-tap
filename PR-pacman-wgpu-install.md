@@ -2,7 +2,7 @@
 
 ## Motivation
 
-See `ISSUE-pacman-wgpu-install.md`. The old formula downloads a Kitty-based release despite describing wgpu.
+See `ISSUE-pacman-wgpu-install.md`. The formula must select the validated native-window source and verify the installed help output.
 
 ## Implementation
 
