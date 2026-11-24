@@ -2,7 +2,6 @@ class MacSync < Formula
   desc "Quiet file and settings sync between Macs"
   homepage "https://github.com/stephenlclarke/mac-sync"
   url "https://github.com/stephenlclarke/mac-sync/releases/download/1.3.0/mac-sync-release-arm64.tar.gz"
-  version "1.3.0"
   sha256 "9f2f41db56dbad082e9db2e43949e9d02a424c34c408f2763b2f6f06ade49a37"
   license any_of: ["AGPL-3.0-or-later", "MIT"]
 
