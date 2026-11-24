@@ -4,11 +4,11 @@ class AwsAutoApprove < Formula
   license "MIT"
 
   if Hardware::CPU.arm?
-    url "https://github.com/stephenlclarke/aws-auto-approve/releases/download/v0.2.0/aws-auto-approve-0.2.0-macos-arm64.tar.gz"
-    sha256 "ce339e18aedc1f0ffdfa07fa64ecf9b73bd1e3fbdc5c810eb0e1b0bd488c0e88"
+    url "https://github.com/stephenlclarke/aws-auto-approve/releases/download/v0.2.1/aws-auto-approve-0.2.1-macos-arm64.tar.gz"
+    sha256 "1179da37547657eed018fafd57a12931a4ad6451b4987e1c41443683ace57a23"
   else
-    url "https://github.com/stephenlclarke/aws-auto-approve/releases/download/v0.2.0/aws-auto-approve-0.2.0-macos-x86_64.tar.gz"
-    sha256 "0b3458aee39d429238375a95000c2584386e3be7882fdfffabda9b05eb0bd681"
+    url "https://github.com/stephenlclarke/aws-auto-approve/releases/download/v0.2.1/aws-auto-approve-0.2.1-macos-x86_64.tar.gz"
+    sha256 "dfaf7209ed76d61653c4f15b8ff8ec904b27c9819a9640f46cd52adcc3345621"
   end
 
   depends_on "awscli"
