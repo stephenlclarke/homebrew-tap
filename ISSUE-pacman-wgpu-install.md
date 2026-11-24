@@ -1,9 +1,9 @@
-# Pacman installs the old Kitty renderer
+# Pacman Native Window Installation
 
 ## Problem
 
-The Pacman formula describes wgpu but downloads `v1.0.0`, whose dependencies still include the Kitty/terminal rendering path. Its HEAD source also selects `main`, while the published port is on `wgpu`.
+The formula must select a validated native-window source and identify its rendering backend in the installed help output. The source pin and HEAD branch must be documented clearly.
 
 ## Expected result
 
-Homebrew installs the published wgpu build and checks its help output without requiring a graphical test session.
+Homebrew installs the published wgpu window build and checks its help output without requiring a graphical test session. Direct desktop binaries are available through the Pacman release workflow.
