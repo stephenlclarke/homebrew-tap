@@ -1,9 +1,9 @@
 class MacSyncCurrent < Formula
   desc "Quiet file and settings sync between Macs"
   homepage "https://github.com/stephenlclarke/mac-sync"
-  url "https://github.com/stephenlclarke/mac-sync/releases/download/current/mac-sync-current-b3196f9942e1-arm64.tar.gz"
-  version "current.77.b3196f9942e1"
-  sha256 "a7cb9e660217f5cbb20ff604a28968a208ff2bd9680ac26bb1d9daa85c57ca3b"
+  url "https://github.com/stephenlclarke/mac-sync/releases/download/current/mac-sync-current-37ace947641d-arm64.tar.gz"
+  version "current.79.37ace947641d"
+  sha256 "f613d9edde779b6a248e36e96d0aac37528b874477565433c820394cd1cbf912"
   license any_of: ["AGPL-3.0-or-later", "MIT"]
 
   depends_on "age"
@@ -34,7 +34,7 @@ class MacSyncCurrent < Formula
   def caveats
     <<~EOS
       This formula installs the current prebuilt package asset:
-        mac-sync-current-b3196f9942e1-arm64.tar.gz
+        mac-sync-current-37ace947641d-arm64.tar.gz
 
       Launch the installed Mac Sync app with:
         mac-sync ui
